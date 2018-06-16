@@ -32,8 +32,8 @@ if 'VCAP_SERVICES' in os.environ:
     print('Found VCAP_SERVICES')
     if 'conversation' in vcap:
         conversationcreds = vcap['conversation'][0]['credentials']
-        conversationUser = creds['username']
-        conversationPassword = creds['password']
+        conversationUser = conversationcreds['username']
+        conversationPassword = conversationcreds['password']
     if 'text_to_speech' in vcap:
         texttospeachcreds = vcap['text_to_speech'][0]['credentials']
         texttospeachUser = texttospeachcreds['username']
