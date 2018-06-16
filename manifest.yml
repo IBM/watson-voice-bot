@@ -3,10 +3,10 @@ declared-services:
   wvb-conversation-service:
     label: conversation
     plan: free
-  wvb-texttospeach-service:
-    label: text_to_speach
+  wvb-texttospeech-service:
+    label: text_to_speech
     plan: standard
-  wvb-speachtotext-service:
+  wvb-speechtotext-service:
     label: speech_to_text
     plan: standard
 
@@ -21,5 +21,5 @@ applications:
   random-route: true
   services:
   - wvb-conversation-service
-  - wvb-texttospeach-service
-  - wvb-speachtotext-service
+  - wvb-texttospeech-service
+  - wvb-speechtotext-service
