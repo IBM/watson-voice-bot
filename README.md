@@ -125,7 +125,7 @@ workspace and select **View details**. Save this ID for later.
 
 ![](doc/source/images/dialog.png)
 
-If running the application using the toolchain then continue back with Step 5 above[Configuring Environment variables ](#5-configure-environment-variable)
+If running the application using the toolchain then continue back with Step 5 in the previous section [Configuring Environment variables ](#5-configure-environment-variable)
 else move on to Step 4 below.
 
 
@@ -178,6 +178,8 @@ TTS_PASSWORD=<add tts password>
 <!--Add a section that explains to the reader what typical output looks like, include screenshots -->
 
 # Sample output
+
+Follow the script under ScriptForVoiceBOT.docx for best results. Alternatively you can configure your own dialog under Watson Assistant.
 
 ![](/doc/source/images/sample_output.png)
 
