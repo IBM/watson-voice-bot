@@ -61,23 +61,23 @@ Use the ``Deploy to IBM Cloud`` button **OR** create the services and run locall
     * wvb-assistant
 
 #### 4. Import Conversation Workspace
-  Follow Step [Import the Conversation workspace](#3-import-the-conversation-workspace) under the Section `Run Locally`
+  Follow Step [Import the Conversation workspace](#3-import-the-conversation-workspace) under the Section **Run Locally**
 
 ![](doc/source/images/application_name.png)
 
 
 #### 5. Configure Environment Variable
-  Open the app starting with the name `CodePattern_VoiceBot from under the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/) by clicking on the Application name.
+  Open the app starting with the name **CodePattern_VoiceBot** from under the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/) by clicking on the Application name.
 
-  Click on `Runtime` on the left nav.
+  Click on **Runtime** on the left nav.
 
-  Select the `Environment Variables` tab.
+  Select the **Environment Variables** tab.
 
-  Scroll down and click on `Add`.
+  Scroll down and click on **Add**.
 
   ![](doc/source/images/add_env_variable.png)
 
-  Specify the Enviroment variable name as `WORKSPACEID and insert the Workspace Id of the Conversation workspace created in Step 4.
+  Specify the Enviroment variable name as **WORKSPACEID** and insert the value Workspace Id of the Conversation workspace created in Step 4.
 
   Click Save and wait for the application to reload.
 
