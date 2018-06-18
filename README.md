@@ -15,7 +15,7 @@ When the reader has completed this Code Pattern, they will understand how to:
 * Integrate Watson Speech To Text, Watson Text To Speech and Watson Assistant into a Voice BOT
 
 <!--Remember to dump an image in this path-->
-![](/data/images/FlowDiagram.PNG)
+![](doc/source/images/FlowDiagram.png)
 
 ## Flow
 <!--Add new flow steps based on the architecture diagram-->
@@ -154,7 +154,7 @@ TTS_PASSWORD=<add tts password>
 
 # Sample output
 
-![](/data/images/sample_output.png)
+![](/doc/source/images/sample_output.png)
 
 <!--Include any troubleshooting tips (driver issues, etc)-->
 
