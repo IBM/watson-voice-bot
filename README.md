@@ -48,34 +48,37 @@ Use the ``Deploy to IBM Cloud`` button **OR** create the services and run locall
 <!--Update the repo and tracking id-->
 [![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/ptrikkur/CodePattern_VoiceBot.git)
 
-1. Press the above ``Deploy to IBM Cloud`` button and then click on ``Deploy``.
+#### 1. Press the above ``Deploy to IBM Cloud`` button and then click on ``Deploy``.
 
 <!--optional step-->
-2. In Toolchains, click on Delivery Pipeline to watch while the app is deployed. Once deployed, the app can be viewed by clicking 'View app'.
+#### 2. In Toolchains, click on Delivery Pipeline to watch while the app is deployed. Once deployed, the app can be viewed by clicking 'View app'.
 ![](doc/source/images/toolchain-pipeline.png)
 
 <!--update with service names from manifest.yml-->
-3. To see the app and services created and configured for this Code Pattern, use the IBM Cloud dashboard. The app is named `watson-voice-bot` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
+#### 3. To see the app and services created and configured for this Code Pattern, use the IBM Cloud dashboard. The app is named `watson-voice-bot` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
     * wvb-speechtotext
     * wvb-texttospeech
     * wvb-assistant
 
-4. Follow Step [Import the Conversation workspace](#3-import-the-conversation-workspace) under the Section 'Run Locally'
+#### 4.
+  Follow Step [Import the Conversation workspace](#3-import-the-conversation-workspace) under the Section 'Run Locally'
+
 ![](doc/source/images/application_name.png)
 
-5. Open the app starting with the name 'CodePattern_VoiceBot' from under the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/) by clicking on the Application name.
 
-Click on Runtime on the left nav.
+#### 5. Open the app starting with the name 'CodePattern_VoiceBot' from under the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/) by clicking on the Application name.
 
-Select the Environment Variables tab
+  Click on Runtime on the left nav.
 
-Scroll down and click on Add
+  Select the Environment Variables tab.
 
-![](doc/source/images/add_env_variable.png)
+  Scroll down and click on Add.
 
-Specify the Enviroment variable name as 'WORKSPACEID' and insert the workspace id of the Conversation workspace created in Step 4.
+  ![](doc/source/images/add_env_variable.png)
 
-Click Save and wait for the application to reload.
+  Specify the Enviroment variable name as 'WORKSPACEID' and insert the Workspace Id of the Conversation workspace created in Step 4.
+
+  Click Save and wait for the application to reload.
 
 ## Run locally
 > NOTE: These steps are only needed when running locally instead of using the ``Deploy to IBM Cloud`` button.
@@ -85,8 +88,8 @@ Click Save and wait for the application to reload.
 1. [Clone the repo](#1-clone-the-repo)
 2. [Create Watson services with IBM Cloud](#2-create-watson-services-with-ibm-cloud)
 3. [Import the Conversation workspace](#3-import-the-conversation-workspace)
-4. [Configure credentials](#5-configure-credentials)
-5. [Run the application](#6-run-the-application)
+4. [Configure credentials](#4-configure-credentials)
+5. [Run the application](#5-run-the-application)
 
 ### 1. Clone the repo
 
@@ -119,9 +122,11 @@ workspace and select **View details**. Save this ID for later.
 *Optionally*, to view the conversation dialog select the workspace and choose the
 **Dialog** tab, here's a snippet of the dialog:
 
-![](doc/source/images/dialog.PNG)
+(If running the application using the toolchain then continue back with Step 5 above)[Configuring Environment variables ](#4)
 
-### 5. Configure credentials
+![](doc/source/images/dialog.png)
+
+### 4. Configure credentials
 
 The credentials for IBM Cloud services (Assistant, Speech To Text and Text To Speech), can be found in the ``Services`` menu in IBM Cloud,
 by selecting the ``Service Credentials`` option for each service.
@@ -160,7 +165,7 @@ TTS_PASSWORD=<add tts password>
 
 ```
 
-### 6. Run the application
+### 5. Run the application
 1. Install [Python](https://www.python.org/) runtime. Note that you will need version 3.6 or higher.
 2. Start the app by running `python welcome.py`
 3. Use the chatbot at `localhost:5000`.
