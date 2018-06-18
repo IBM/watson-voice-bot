@@ -14,8 +14,8 @@ applications:
 - path: .
   memory: 128M
   instances: 1
-  name: WatsonVoiceBotDemo
-  host: WatsonVoiceBotDemo
+  name: watson-voice-bot
+  host: watson-voice-bot
   disk_quota: 512M
   buildpack: https://github.com/cloudfoundry/python-buildpack.git
   random-route: true
