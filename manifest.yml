@@ -5,10 +5,10 @@ declared-services:
     plan: free
   wvb-texttospeech-service:
     label: text_to_speech
-    plan: standard
+    plan: lite
   wvb-speechtotext-service:
     label: speech_to_text
-    plan: standard
+    plan: lite
 
 applications:
 - path: .
