@@ -6,7 +6,6 @@
 In this Code Pattern, we will create a Voice BOT ie. a Web based Chat Bot activated with voice using Watson Speech To Text, Watson Text To Speech, Watson Assistant built on top of JQuery and Python Flask.
 In this pattern the chat bot is activated using a voice input and the response is also received as an Audio input. The input and response is also shown on the screen in text format for user verification.
 
-
 When the reader has completed this Code Pattern, they will understand how to:
 
 * Make a Watson Speech To Text Call using Web Socket Connection
@@ -179,7 +178,32 @@ TTS_PASSWORD=<add tts password>
 
 # Sample output
 
-Follow the script under ``ScriptForVoiceBOT.docx`` for best results. Alternatively you can configure your own dialog under Watson Assistant.
+Follow the script below for a sample path, or configure your own dialog under Watson Assistant.
+
+```
+Voice Bot: Hello. How can I help you?
+User Reply: I have a problem
+
+Voice Bot: What issue are you facing?
+User Reply: I am not able to upgrade my server
+
+Voice Bot: Which server are you using?
+User Reply: Windows
+
+Voice Bot: Which version are you using?
+User Reply: 2016
+
+Voice Bot: Do you see any error?
+User Reply: No
+
+Voice Bot: Can you try to restart your machine and then try it out once?
+User Reply: Ok
+
+Voice Bot: Is it working now?
+User Reply: Yes
+
+Voice Bot: Glad to be of help
+```
 
 ![](/doc/source/images/sample_output.png)
 
