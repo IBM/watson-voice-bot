@@ -1,6 +1,6 @@
 <!--Put badges at the very top -->
 <!--change the repo -->
-[![Build Status](https://travis-ci.org/IBM/watson-banking-chatbot.svg?branch=master)](https://travis-ci.org/IBM/watson-banking-chatbot)
+[![Build Status](https://travis-ci.com/rameshpoomalai/CodePattern_VoiceBot.svg?branch=master)](https://travis-ci.org/IBM/watson-banking-chatbot)
 <!--Add a new Title and fill in the blanks -->
 # Watson Voice BOT
 In this Code Pattern, we will create a Voice BOT ie. a Web based Chat Bot activated with voice using Watson Speech To Text, Watson Text To Speech, Watson Assistant built on top of JQuery and Python Flask.
