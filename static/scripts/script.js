@@ -286,12 +286,7 @@ function startWSTTService()
     stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
       token: tokenSTT,
       object_mode: false,
-      //model:'en-US_BroadbandModel',
       model:'en-US_NarrowbandModel',
-      //keywords: ['bill', 'plan', 'prepaid'],
-      customization_id: "3f1b4290-c19a-4764-b7c7-7a28dd700eb5",
-      acoustic_customization_id: "752ddc4e-c8ef-46dd-92bb-bed6bf9b194e",
-      customization_weight: 1.0,
       keepMicrophone: true,
       max_alternatives: 0,
       //keywords_threshold: 1,
