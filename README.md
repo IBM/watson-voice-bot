@@ -182,7 +182,7 @@ Follow the script below for a sample path in an insurance domain, or configure y
 
 ```
 Voice Bot: Hello. How can I help you?
-User Reply: I am looking for an insurance quote
+User Reply: I am trying to buy an insurance
 
 Voice Bot: You have come to the right place We offer you a smart, affordable and convenient way to safeguard the future for you and your family. Can I ask you a couple of questions to come up with the best plan for you?
 User Reply: ok sure
@@ -191,13 +191,13 @@ Voice Bot: Please tell me your Name followed by Date Of Birth and Annual Income
 User Reply: This is Mary
 
 Voice Bot: Please enter your Date of Birth
-User Reply: 12 12 2009
+User Reply: 2nd June 1945
 
 Voice Bot: Your annual income?
-User Reply: 1200000 rupees per annum
+User Reply: 1200000 dollars
 
-Voice Bot: Do you smoke? Yes / No
-User Reply: No
+Voice Bot: Do you smoke?
+User Reply: Nope I dont
 
 Voice Bot: Please tell me your gender
 User Reply: Female
@@ -215,13 +215,13 @@ User Reply: 8 years
 Voice Bot: Please enter a term ranging between 10 years to 35 years.
 User Reply: 12
 
-Voice Bot: Your monthly premium for term under the Basic Life Cover plan is Rs67767. \nDo you want to try any other options or go ahead with buying this?
+Voice Bot: Your monthly premium for term under the Basic Life Cover plan is 67767 dollars. Do you want to try any other options or go ahead with buying this?
 User Reply: No What is Basic Life Cover?
 
 Voice Bot: On death during the Policy term, Sum Assured as a lump sum is paid to the nominee and the policy terminates.
 User Reply: ok Thanks
 
-Voice Bot: Have a good day
+Voice Bot: Have a great day
 
 ```
 
