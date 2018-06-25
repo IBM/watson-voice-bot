@@ -215,7 +215,7 @@ User Reply: 8 years
 Voice Bot: Please enter a term ranging between 10 years to 35 years.
 User Reply: 12
 
-Voice Bot: Your monthly premium for term under the Basic Life Cover plan is 67767 dollars. Do you want to try any other options or go ahead with buying this?
+Voice Bot: Your yearly premium for 12 years under the Basic Life Cover plan is 67767 dollars. Do you want to try any other options or go ahead with buying this?
 User Reply: No What is Basic Life Cover?
 
 Voice Bot: On death during the Policy term, Sum Assured as a lump sum is paid to the nominee and the policy terminates.
