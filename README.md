@@ -47,38 +47,38 @@ Use the ``Deploy to IBM Cloud`` button **OR** create the services and run locall
 <!--Update the repo and tracking id-->
 [![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/ptrikkur/CodePattern_VoiceBot.git)
 
-#### 1. Press the above ``Deploy to IBM Cloud`` button and then click on ``Deploy``.
+1. Press the above ``Deploy to IBM Cloud`` button and then click on ``Deploy``.
 
 <!--optional step-->
-#### 2. In Toolchains, click on Delivery Pipeline to watch while the app is deployed. Once deployed, the app can be viewed by clicking 'View app'.
+2. In Toolchains, click on `Delivery Pipeline` to watch while the app is deployed. Once deployed, the app can be viewed by clicking `View app`.
 ![](doc/source/images/toolchain-pipeline.png)
 
 <!--update with service names from manifest.yml-->
-#### 3. To see the app and services created and configured for this Code Pattern, use the IBM Cloud dashboard. The app is named `CodePattern_VoiceBot-` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
+3. To see the app and services created and configured for this Code Pattern, use the IBM Cloud dashboard. The app is named `CodePattern_VoiceBot-` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
     * wvb-speechtotext
     * wvb-texttospeech
     * wvb-assistant
 
-#### 4. Import Conversation Workspace
+4. Import Conversation Workspace
   Follow Step [Import the Conversation workspace](#3-import-the-conversation-workspace) under the Section **Run Locally**
 
 ![](doc/source/images/application_name.png)
 
 
-#### 5. Configure Environment Variable
-  Open the app starting with the name **CodePattern_VoiceBot** from under the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/) by clicking on the Application name.
+5. Configure Environment Variable
+  Open the app starting with the name `CodePattern_VoiceBot from under the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/) by clicking on the Application name.
 
-  Click on **Runtime** on the left nav.
+  Click on `Runtime` on the left nav.
 
-  Select the **Environment Variables** tab.
+  Select the `Environment Variables` tab.
 
-  Scroll down and click on **Add**.
+  Scroll down and click on `Add`.
 
   ![](doc/source/images/add_env_variable.png)
 
-  Specify the Enviroment variable name as **WORKSPACEID** and insert the value Workspace Id of the Conversation workspace created in Step 4.
+  Specify the Enviroment variable name as `WORKSPACEID` and insert the value Workspace Id of the Conversation workspace created in Step 4.
 
-  Click Save and wait for the application to reload.
+  Click `Save` and wait for the application to reload.
 
 ## Run locally
 > NOTE: These steps are only needed when running locally instead of using the ``Deploy to IBM Cloud`` button.
@@ -113,11 +113,11 @@ Create the following services:
 
 ### 3. Import the Conversation workspace
 
-Launch the **Watson Assistant** tool. Use the **import** icon button on the right
+Launch the `Watson Assistant` tool. Use the `import` icon button on the right
 
 Find the local version of [`data/assistant/workspaces/voicebot.json`](data/assistant/workspaces/voicebot.json) and select
-**Import**. Find the **Workspace ID** by clicking on the context menu of the new
-workspace and select **View details**. Save this ID for later.
+`Import`. Find the `Workspace ID` by clicking on the context menu of the new
+workspace and select `View details`. Save this ID for later.
 
 *Optionally*, to view the conversation dialog select the workspace and choose the
 **Dialog** tab, here's a snippet of the dialog:
@@ -142,7 +142,7 @@ Copy the [`env.sample`](env.sample) to `.env`.
 $ cp env.sample .env (optional)
 ```
 Note: This is an optional step that you will have to execute in the event where you see that the
-credentials are not getting picked up from the Cloud Runtime (VCAP_SERVICES) for some reason.
+credentials are not getting picked up from the Cloud Runtime (VCAP_SERVICES`) for some reason.
 Edit the `.env` file with the necessary settings.
 
 #### `env.sample:`
