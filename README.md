@@ -54,7 +54,7 @@ Use the ``Deploy to IBM Cloud`` button **OR** create the services and run locall
 ![](doc/source/images/toolchain-pipeline.png)
 
 <!--update with service names from manifest.yml-->
-#### 3. To see the app and services created and configured for this Code Pattern, use the IBM Cloud dashboard. The app is named `watson-voice-bot` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
+#### 3. To see the app and services created and configured for this Code Pattern, use the IBM Cloud dashboard. The app is named `CodePattern_VoiceBot-` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
     * wvb-speechtotext
     * wvb-texttospeech
     * wvb-assistant
@@ -139,8 +139,10 @@ earlier setup step (``WORKSPACE_ID``).
 Copy the [`env.sample`](env.sample) to `.env`.
 
 ```
-$ cp env.sample .env
+$ cp env.sample .env (optional)
 ```
+Note: This is an optional step that you will have to execute in the event where you see that the
+credentials are not getting picked up from the Cloud Runtime (VCAP_SERVICES) for some reason.
 Edit the `.env` file with the necessary settings.
 
 #### `env.sample:`
@@ -150,20 +152,17 @@ Edit the `.env` file with the necessary settings.
 # Rename this file to .env before starting the app.
 
 # Watson conversation
-CONVERSATION_USERNAME=<add_conversation_username>
+CONVERSATION_USER=<add_conversation_username>
 CONVERSATION_PASSWORD=<add_conversation_password>
-WORKSPACE_ID=<add_conversation_workspace>
+WORKSPACEID=<add_conversation_workspace>
 
 # Watson Speech To Text
-STT_USERNAME=<add_stt_username>
-STT_PASSWORD=<add stt password>
+SPEECHTOTEXT_USER=<add_stt_username>
+SPEECHTOTEXT_PASSWORD=<add stt password>
 
 # Watson Text To SpeechToText
-TTS_USERNAME=<add tts username>
-TTS_PASSWORD=<add tts password>
-
-# Run locally on a non-default port (default is 5000)
-# PORT=5000
+TEXTTOSPEECH_USER=<add tts username>
+TEXTTOSPEECH_PASSWORD=<add tts password>
 
 ```
 
