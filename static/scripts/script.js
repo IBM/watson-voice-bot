@@ -15,6 +15,7 @@ function init()
 {
     initSTTService();
 }
+
 function initSTTService()
 {
     fetch('/api/speech-to-text/token')
@@ -26,6 +27,7 @@ function initSTTService()
         console.log(error);
     });
 }
+
 function initTTSService(){
   fetch('/api/text-to-speech/token')
   .then(function(response) {
@@ -160,7 +162,6 @@ if (window.SpeechRecognition != null ){
     var recognizer = new window.SpeechRecognition();
     var transcription = document.getElementById('q');
 
-
     // Start recognising
     recognizer.onresult = function(event) {
         transcription.textContent = '';
@@ -198,16 +199,11 @@ function startRecording() {
   //recorder = new Recorder(input);
   //recorder.record();
   startWSTTService();
-
 }
 
 function stopRecording() {
   stopWSTTService();
 }
-
-
-
-
 
 function stopCallback(blob){
   websocket.send(blob);
@@ -257,7 +253,6 @@ function callTexttoSpeach(res)
   });
 
 }
-
 
 function callConversation(res)
 {
@@ -311,12 +306,10 @@ function startWSTTService()
         $("#q").val("I am listening ...");
     });
     $("#q").val("I am listening ...");
-
 }
 
 function stopWSTTService()
 {
     stream.stop();
     currentTime = new Date().getTime() / 1000;
-
 }
