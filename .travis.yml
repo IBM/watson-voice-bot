@@ -1,10 +1,9 @@
 language: python
 python:
-  - "3.6.5"
-
-# command to install dependencies
+  - "2.7"
+  - "3.6"
 install:
   - pip install -r requirements.txt
-# command to run tests
+  - pip install flake8
 script:
-  - pytest # or py.test for Python versions 3.5 and below
+  - flake8 .
