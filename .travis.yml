@@ -6,5 +6,4 @@ install:
   - pip install -r requirements.txt
   - pip install flake8
 script:
-  # - pytest # or py.test for Python versions 3.5 and below
   - flake8 .
