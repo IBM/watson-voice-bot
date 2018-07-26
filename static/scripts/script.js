@@ -1,23 +1,24 @@
-var conversationContext = '';
+var conversationContext = "";
 var audioContext = new AudioContext();
-var audioInput = null,
-    realAudioInput = null,
-    inputPoint = null,
-    audioRecorder = null;
+var audioInput = null;
+var realAudioInput = null;
+var inputPoint = null;
+var audioRecorder = null;
 var tokenSTT;
 var tokenTTS;
-var stream ;
+var stream;
 var currentTime = 0;
 
-window.addEventListener('load', init );
+window.addEventListener("load", init );
 
 function init()
 {
     initSTTService();
 }
+
 function initSTTService()
 {
-    fetch('/api/speech-to-text/token')
+    fetch("/api/speech-to-text/token")
     .then(function(response) {
         return response.text();
     }).then(function(_token) {
@@ -26,8 +27,9 @@ function initSTTService()
         console.log(error);
     });
 }
+
 function initTTSService(){
-  fetch('/api/text-to-speech/token')
+  fetch("/api/text-to-speech/token")
   .then(function(response) {
       return response.text();
   }).then(function(_token) {
@@ -60,20 +62,20 @@ function display_msg_div(str, who) {
   var time    = new Date();
   var hours   = time.getHours();
   var minutes = time.getMinutes();
-  var ampm    = hours >= 12 ? 'pm' : 'am';
+  var ampm    = hours >= 12 ? "pm" : "am";
   hours       = hours % 12;
-  hours       = hours ? hours : 12; // the hour '0' should be '12'
-  hours       = hours < 10 ? '0'+hours : hours;
-  minutes     = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
+  hours       = hours ? hours : 12; // the hour "0" should be "12"
+  hours       = hours < 10 ? "0"+hours : hours;
+  minutes     = minutes < 10 ? "0"+minutes : minutes;
+  var strTime = hours + ":" + minutes + " " + ampm;
   var msg_html = "<div class='msg-card-wide mdl-card " + who + "'><div class='mdl-card__supporting-text'>"
   msg_html    += str;
   msg_html    += "</div><div class='" + who + "-line'>" + strTime + "</div></div>";
 
   $("#messages").append(msg_html);
-  $('#messages').scrollTop($('#messages')[0].scrollHeight);
+  $("#messages").scrollTop($("#messages")[0].scrollHeight);
 
-  if(who=='user') {
+  if(who=="user") {
     $("#q").val("");
     $("#q").attr("disabled", "disabled");
     $("#p2").fadeTo(500,1);
@@ -87,9 +89,9 @@ function display_msg_div(str, who) {
 $(document).ready(function(){
   $("#q").attr("disabled", "disabled");
   $("#p2").fadeTo(500,1);
-  $("#h").val('0');
+  $("#h").val("0");
 
-  fetch('/api/text-to-speech/token')
+  fetch("/api/text-to-speech/token")
   .then(function(response) {
       return response.text();
   }).then(function(_token) {
@@ -100,7 +102,7 @@ $(document).ready(function(){
         context:"",
       }).done(function(res) {
         conversationContext = res.results.context;
-        display_msg_div(res.results.responseText, 'bot');
+        display_msg_div(res.results.responseText, "bot");
 
         stream = WatsonSpeech.TextToSpeech.synthesize({
             token: tokenTTS,
@@ -108,21 +110,20 @@ $(document).ready(function(){
           });
 
       }).fail(function(jqXHR, e) {
-        console.log('Error: ' + jqXHR.responseText);
+        console.log("Error: " + jqXHR.responseText);
       });
   }).catch(function(error) {
       console.log(error);
   });
 
-
-	$("#q").keyup(function(e){
-			$("#submit").removeAttr("disabled");
+    $("#q").keyup(function(e){
+            $("#submit").removeAttr("disabled");
       return false;
-	});
+    });
 
-	$("#submit").click(function(){
-			var text = $("#q").val();
-      display_msg_div(text, 'user');
+    $("#submit").click(function(){
+            var text = $("#q").val();
+      display_msg_div(text, "user");
 
       $.post("/api/conversation",
       {
@@ -134,13 +135,13 @@ $(document).ready(function(){
               token: tokenTTS,
               text:res.results.responseText
           });
-          display_msg_div(res.results.responseText, 'bot');
+          display_msg_div(res.results.responseText, "bot");
       }).fail(function(jqXHR, e) {
-        console.log('Error: ' + jqXHR.responseText);
+        console.log("Error: " + jqXHR.responseText);
       });
 
       return false;
-	});
+    });
 });
 
 // Generate a unique id for this client
@@ -150,24 +151,23 @@ function guid() {
       .toString(16)
       .substring(1);
   }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return s4() + s4() + "-" + s4() + "-" + s4() + "-" +
+    s4() + "-" + s4() + s4() + s4();
 }
 
 //setting speech to text function
 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
 if (window.SpeechRecognition != null ){
     var recognizer = new window.SpeechRecognition();
-    var transcription = document.getElementById('q');
-
+    var transcription = document.getElementById("q");
 
     // Start recognising
     recognizer.onresult = function(event) {
-        transcription.textContent = '';
+        transcription.textContent = "";
         //$("#chat_input").val("I am listening ...");
         for (var i = event.resultIndex; i < event.results.length; i++) {
             if (event.results[i].isFinal) {
-                transcription.textContent = event.results[i][0].transcript ;//+ ' (Confidence: ' + event.results[i][0].confidence + ')'
+                transcription.textContent = event.results[i][0].transcript ;//+ " (Confidence: " + event.results[i][0].confidence + ")"
             } else {
                 transcription.textContent += event.results[i][0].transcript;
             }
@@ -180,14 +180,14 @@ if (window.SpeechRecognition != null ){
 
     // Listen for errors
     recognizer.onerror = function(event) {
-        console.log('Recognition error: ' + event.message + '<br />');
+        console.log("Recognition error: " + event.message + "<br />");
         document.getElementById("stt2").src = "./static/img/mic.gif";
-        $('#q').val('');
+        $("#q").val("");
     };
 
     recognizer.onend = function(event) {
         document.getElementById("stt2").src = "./static/img/mic.gif";
-        //$('#q').val('');
+        //$("#q").val("");
     };
 }
 else{
@@ -198,26 +198,21 @@ function startRecording() {
   //recorder = new Recorder(input);
   //recorder.record();
   startWSTTService();
-
 }
 
 function stopRecording() {
   stopWSTTService();
 }
 
-
-
-
-
 function stopCallback(blob){
   websocket.send(blob);
-  websocket.send(JSON.stringify({action: 'stop'}));
+  websocket.send(JSON.stringify({action: "stop"}));
 }
 
 //changing the mic icon depedening upon its name. Also disabling the speech recognizer in this case
-$('#stt2').click(function(){
+$("#stt2").click(function(){
     var fullPath = document.getElementById("stt2").src;
-    var filename = fullPath.replace(/^.*[\\\/]/, '');
+    var filename = fullPath.replace(/^.*[\\\/]/, "");
     if(filename=="mic.gif"){
         try{
             document.getElementById("stt2").src = "./static/img/mic_active.png";
@@ -228,7 +223,7 @@ $('#stt2').click(function(){
     }
     else{
         stopRecording();
-        $("#q").val('');
+        $("#q").val("");
         document.getElementById("stt2").src = "./static/img/mic.gif";
     }
 
@@ -236,7 +231,7 @@ $('#stt2').click(function(){
 
 function callTexttoSpeach(res)
 {
-  display_msg_div(res, 'bot');
+  display_msg_div(res, "bot");
   $("#q").attr("disabled", "disabled");
 
   $.post("/api/conversation",
@@ -250,14 +245,13 @@ function callTexttoSpeach(res)
           token: tokenTTS,
           text:res.results.responseText
       });
-      display_msg_div(traslatedText, 'bot');
+      display_msg_div(traslatedText, "bot");
 
   }).fail(function(jqXHR, e) {
-    console.log('Error: ' + jqXHR.responseText);
+    console.log("Error: " + jqXHR.responseText);
   });
 
 }
-
 
 function callConversation(res)
 {
@@ -274,10 +268,10 @@ function callConversation(res)
               text:res.results.responseText
           });
 
-      display_msg_div(res.results.responseText, 'bot');
+      display_msg_div(res.results.responseText, "bot");
 
       }).fail(function(jqXHR, e) {
-        console.log('Error: ' + jqXHR.responseText);
+        console.log("Error: " + jqXHR.responseText);
       });
 }
 
@@ -286,37 +280,35 @@ function startWSTTService()
     stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
       token: tokenSTT,
       object_mode: false,
-      model:'en-US_NarrowbandModel',
+      model:"en-US_NarrowbandModel",
       keepMicrophone: true,
       max_alternatives: 0,
       //keywords_threshold: 1,
       interim_results: false
     });
 
-    stream.setEncoding('utf8'); // get text instead of Buffers for on data events
+    stream.setEncoding("utf8"); // get text instead of Buffers for on data events
 
-    stream.on('data', function(data) {
+    stream.on("data", function(data) {
       console.log("Time Taken by STT:"+ ((new Date().getTime() / 1000)- currentTime))
-      display_msg_div(data, 'bot');
+      display_msg_div(data, "bot");
       callConversation(data);
     });
 
-    stream.on('error', function(err) {
+    stream.on("error", function(err) {
         console.log(err);
         $("#q").val("Error opening the STT Stream ...");
     });
 
-    stream.on('listening', function() {
+    stream.on("listening", function() {
         console.log("received event listening")
         $("#q").val("I am listening ...");
     });
     $("#q").val("I am listening ...");
-
 }
 
 function stopWSTTService()
 {
     stream.stop();
     currentTime = new Date().getTime() / 1000;
-
 }
