@@ -1,32 +1,31 @@
 [![Build Status](https://travis-ci.org/IBM/watson-voice-bot.svg?branch=master)](https://travis-ci.org/IBM/watson-voice-bot)
 
-# Watson Voice BOT
+# Create a web based chatbot with voice input and output
 
-In this Code Pattern, we will create a Voice BOT ie. a Web based Chat Bot activated with voice using Watson Speech To Text, Watson Text To Speech, Watson Assistant built on top of JQuery and Python Flask.
-In this pattern the chat bot is activated using a voice input and the response is also received as an Audio input. The input and response is also shown on the screen in text format for user verification.
+In this code pattern we will create a web based chat bot, but the twist here is that we'll be using voice input and output. For the conversation dialog we'll of course be using Watson Assistant, but we'll also be using Watson Speech To Text to capture the user's voice, and lastly we'll use Watson Text To Speech to playback the chatbots response to the user. The web application itself is built on top of JQuery and Python Flask.
 
-When the reader has completed this Code Pattern, they will understand how to:
+When the reader has completed this code pattern they will understand how to:
 
-* Make a Watson Speech To Text Call using Web Socket Connection
+* Make a Watson Speech To Text call using a Web Socket Connection
 * Make a Watson Text to Speech REST API call
 * Send and receive messages to Watson Assistant using REST APIs
-* Integrate Watson Speech To Text, Watson Text To Speech and Watson Assistant into a Voice BOT
+* Integrate Watson Speech To Text, Watson Text To Speech and Watson Assistant in a web app
 
-![](doc/source/images/FlowDiagram.png)
+![](doc/source/images/architecture.png)
 
 ## Flow
 
-1. User gives Audio Input through the browser
-2. The Audio Input is passed onto Watson Speech To Text using a Web Socket connection
+1. User selects the microphone option on the browser and speaks.
+2. The voice is passed on to Watson Speech To Text using a Web Socket connection.
 3. The text from Watson Speech to Text is extracted and sent as input to Watson Assistant.
-4. The response from Watson Assistant is passed onto Watson Text to Speech and the audio output is given to the user.
-5. The UI also displays the text corresponding to the dialog happening in audio format.
+4. The response from Watson Assistant is passed onto Watson Text to Speech.
+5. The audio output is sent to the web application and played back to the user, while the UI also displays the same text.
 
 ## Included components
 
-* [Watson Speech-to-Text](https://www.ibm.com/watson/developercloud/speech-to-text.html):  A service that converts human voice into written text.
+* [Watson Speech-to-Text](https://www.ibm.com/watson/services/speech-to-text/): A service that converts human voice into written text.
 * [Watson Text-to-Speech](https://www.ibm.com/watson/services/text-to-speech/): Converts written text into natural sounding audio in a variety of languages and voices.
-* [Watson Assistant](https://www.ibm.com/watson/services/conversation/): Create a chatbot with a program that conducts a conversation via auditory or textual methods.
+* [Watson Assistant](https://www.ibm.com/watson/ai-assistant/): Create a chatbot with a program that conducts a conversation via auditory or textual methods.
 
 ## Featured technologies
 
@@ -40,62 +39,79 @@ When the reader has completed this Code Pattern, they will understand how to:
 
 # Steps
 
-Use the ``Deploy to IBM Cloud`` button **OR** create the services and run locally.
+We'll have two methods to run this application: [using an easy one-click deploy option](#using-the-deploy-to-ibm-cloud-button), or [locally with a few CLI tools](#run-the-application-locally). Depending on your objective, learning or seeing the app quickly, choose accordingly.
 
-## Deploy to IBM Cloud
+## Using the `Deploy to IBM Cloud` button
 
-[![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/watson-voice-bot.git)
+> If you prefer to deploy the application manually, scroll down to the next section.
 
-1. Press the above ``Deploy to IBM Cloud`` button and then click on ``Deploy``.
-
-2. In Toolchains, click on `Delivery Pipeline` to watch while the app is deployed. Once deployed, the app can be viewed by clicking `View app`.
-
-   ![](doc/source/images/toolchain-pipeline.png)
-
-3. To see the app and services created and configured for this Code Pattern, use the IBM Cloud dashboard. The app is named `CodePattern_VoiceBot-` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
-
-   * wvb-speechtotext
-   * wvb-texttospeech
-   * wvb-assistant
-
-4. Import the Watson Assistant workspace. Follow Step [Import the Conversation workspace](#3-import-the-conversation-workspace) under the Section **Run Locally**
-
-   ![](doc/source/images/application_name.png)
-
-5. Configure Environment Variable. Open the app starting with the name `CodePattern_VoiceBot` from under the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/) by clicking on the Application name.
-
-  Click on `Runtime` on the left nav.
-
-  Select the `Environment Variables` tab.
-
-  Scroll down and click on `Add`.
-
-  ![](doc/source/images/add_env_variable.png)
-
-  Specify the Enviroment variable name as `WORKSPACEID` and insert the value workspace ID of the Conversation workspace created in Step 4.
-
-  Click `Save` and wait for the application to reload.
-
-## Run locally
-
-> NOTE: These steps are only needed when running locally instead of using the `Deploy to IBM Cloud` button.
+Steps:
 
 1. [Clone the repo](#1-clone-the-repo)
-2. [Create Watson services with IBM Cloud](#2-create-watson-services-with-ibm-cloud)
-3. [Import the Conversation workspace](#3-import-the-conversation-workspace)
-4. [Configure credentials](#4-configure-credentials)
-5. [Run the application](#5-run-the-application)
+2. [Create the services and deploy the web app](#2-create-the-services-and-deploy-the-web-app)
+3. [Upload the Watson Assistant workspace](#3-upload-the-watson-assistant-workspace)
+4. [Configure environment variables](#4-configure-environment-variables)
 
 ### 1. Clone the repo
 
-Clone the `watson-voice-bot` locally. In a terminal, run:
+Clone the `watson-voice-bot` repo locally. In a terminal, run:
 
 ```
-$ git clone https://github.com/IBM/watson-voice-bot
+git clone https://github.com/IBM/watson-voice-bot
 ```
 
-We’ll be using the file [`data/conversation/assistant/voicebot.json`](data/aassistant/workspaces/voicebot.json) and the folder
-[`data/assistant/workspaces/`](data/assistant/workspaces/)
+We’ll be using the file [`data/workspace.json`](data/workspace.json).
+
+### 2. Create the services and deploy the web app
+
+The next step is to deploy the application, we'll do this by running clicking the button below. A nice byproduct of doing doing this is that the services required (Speech-to-Text, Text-to-Speech, and Assistant) will be created automatically. Click the button below.
+
+[![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/watson-voice-bot.git)
+
+When the DevOps Toolchain Pipeline appears, click on the `Deploy` button to start the deployment. You can optionally, click on the `Delivery Pipeline` to watch the logs as the app is deployed.
+
+![](doc/source/images/toolchain-pipeline.png)
+
+Once deployed, the app can be viewed by clicking `View app`. The app can also be viewed in the dashboard. The app should be prefixed with the string `watson-voice-bot-`, and the corresponding services that were created and easily identified by the `wvb-` prefix, i.e.: `wvb-assistant`.
+
+### 3. Upload the Watson Assistant workspace
+
+Now that our services are created and the app is deployed we need to update tell the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
+
+Each workspace in Watson Assistant has a specific ID, to find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
+
+Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab, here's a snippet of the dialog:
+
+![](doc/source/images/dialog.png)
+
+### 4. Configure environment variables
+
+The last step to perform is to configure our application to use the right Watson Assistant dialog. We'll solve this by specifying the workspace ID as an environment variable that the web application has access to read. To do this we'll navigate to our application overview from the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/), searching for `watson-voice-bot` and clicking on the name.
+
+From the application overview, we can click on the `Runtime` menu located in the navigation bar on the left. Select the `Environment Variables` tab. Scroll down and click on `Add`.
+
+![](doc/source/images/add_env_variable.png)
+
+We'll add the enviroment variable key name as `WORKSPACEID` and for the value we'll use the workspace ID from Step 3. Click `Save` and wait for the application to reload.
+
+Once the application restarts, click on the generated URL and start interacting with your voice enabled chatbot! See [Sample output](#sample-output) for things to say to your chatbot.
+
+## Run the application locally
+
+1. [Clone the repo](#1-clone-the-repo)
+2. [Create Watson services with IBM Cloud](#2-create-watson-services-with-ibm-cloud)
+3. [Upload the Watson Assistant workspace](#3-upload-the-watson-assistant-workspace)
+4. [Configure `.env` with credentials](#4-configure-env-with-credentials)
+
+### 1. Clone the repo
+
+Clone the `watson-voice-bot` repo locally. In a terminal, run:
+
+```
+git clone https://github.com/IBM/watson-voice-bot
+```
+
+We’ll be using the file [`data/workspace.json`](data/workspace.json).
 
 ### 2. Create Watson services with IBM Cloud
 
@@ -105,39 +121,28 @@ Create the following services:
 * [**Watson Speech To Text**](https://console.bluemix.net/catalog/services/speech-to-text)
 * [**Watson Text To Speech**](https://console.bluemix.net/catalog/services/text-to-speech)
 
-### 3. Import the Conversation workspace
+### 3. Upload the Watson Assistant workspace
 
-Launch the `Watson Assistant` tool. Use the `import` icon button on the right
+Now that our services are created and the app is deployed we need to update tell the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
 
-Find the local version of [`data/assistant/workspaces/voicebot.json`](data/assistant/workspaces/voicebot.json) and select
-`Import`. Find the `Workspace ID` by clicking on the context menu of the new
-workspace and select `View details`. Save this ID for later.
+Each workspace in Watson Assistant has a specific ID, to find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
 
-*Optionally*, to view the conversation dialog select the workspace and choose the
-**Dialog** tab, here's a snippet of the dialog:
+Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab, here's a snippet of the dialog:
 
 ![](doc/source/images/dialog.png)
 
-If running the application using the toolchain then continue back with Step 5 in the previous section [Configuring Environment variables ](#5-configure-environment-variable)
-else move on to Step 4 below.
+### 4. Configure `.env` with credentials
 
-### 4. Configure credentials
-
-The credentials for IBM Cloud services (Assistant, Speech To Text and Text To Speech), can be found in the ``Services`` menu in IBM Cloud,
-by selecting the ``Service Credentials`` option for each service.
-
-The other settings for Conversation was collected during the
-earlier setup step (``WORKSPACE_ID``).
-
-Copy the [`env.sample`](env.sample) to `.env`.
+Our services are created and workspace uploaded. It's now time to let our application run locally and to do we'll configure a simple text file with the values we want to use. We begin by copying the the [`env.sample`](env.sample) file and naming it `.env`.
 
 ```
-$ cp env.sample .env (optional)
+cp env.sample .env
 ```
 
-> Note: This is an optional step that you will have to execute in the event where you see that the
-credentials are not getting picked up from the Cloud Runtime (`VCAP_SERVICES`) for some reason.
-Edit the `.env` file with the necessary settings.
+We now populate the key-value pairs with credentials for each IBM Cloud service (Assistant, Speech To Text, and Text To Speech). These values can be found in the `Services` menu in IBM Cloud, by selecting the `Service Credentials` option for each service.
+
+Lastly, the `WORKSPACEID` value was retrieved in the previous step, we use that value here.
+earlier setup step (`WORKSPACE_ID`).
 
 #### `env.sample:`
 
@@ -161,11 +166,9 @@ TEXTTOSPEECH_PASSWORD=<add tts password>
 
 ### 5. Run the application
 
-1. Install [Python](https://www.python.org/) runtime. Note that you will need version 3.6 or higher.
-2. Start the app by running `python welcome.py`
-3. Use the chatbot at `localhost:5000`.
-4. Click on the mic icon to speak and click again once you are done speaking to record you speech.
-> Note: server host can be changed as required in server.js and `PORT` can be set in `.env`.
+1. Start the app by running `python welcome.py`
+2. Launch a browser and navigate to [http://localhost:5000](http://localhost:5000)
+3. Click on the microphone icon to begin speaking and click it again when you are finished.
 
 # Sample output
 
@@ -218,6 +221,7 @@ Voice Bot: Have a great day
 ![](/doc/source/images/sample_output.png)
 
 # Links
+
 * [Watson Node.js SDK](https://github.com/watson-developer-cloud/node-sdk)
 * [Relevancy Training Demo Video](https://www.youtube.com/watch?v=8BiuQKPQZJk)
 * [Relevancy Training Demo Notebook](https://github.com/akmnua/relevancy_passage_bww)
