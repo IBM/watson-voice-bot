@@ -64,7 +64,7 @@ We’ll be using the file [`data/workspace.json`](data/workspace.json).
 
 ### 2. Create the services and deploy the web app
 
-The next step is to deploy the application, we'll do this by running clicking the button below. A nice byproduct of doing doing this is that the services required (Speech-to-Text, Text-to-Speech, and Assistant) will be created automatically. Click the button below.
+The next step is to deploy the application, we'll do this by clicking the button below. A nice byproduct of doing this is that the services required (Speech-to-Text, Text-to-Speech, and Assistant) will be created automatically. Click the button below.
 
 [![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/watson-voice-bot.git)
 
@@ -72,7 +72,7 @@ When the DevOps Toolchain Pipeline appears, click on the `Deploy` button to star
 
 ![](doc/source/images/toolchain-pipeline.png)
 
-Once deployed, the app can be viewed by clicking `View app`. The app can also be viewed in the dashboard. The app should be prefixed with the string `watson-voice-bot-`, and the corresponding services that were created and easily be identified by the `wvb-` prefix, i.e.: `wvb-assistant`.
+Once deployed, the app can be viewed by clicking `View app`. The app can also be viewed in the dashboard. The app should be prefixed with the string `watson-voice-bot-`, and the corresponding services that were created can easily be identified by the `wvb-` prefix, i.e.: `wvb-assistant`.
 
 ### 3. Upload the Watson Assistant workspace
 
@@ -125,7 +125,7 @@ Create the following services:
 
 Now that our services are created and the app is deployed we need to update the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
 
-Each workspace in Watson Assistant has a specific ID, to find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
+Each workspace in Watson Assistant has a specific ID. To find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
 
 Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab. Here's a snippet of the dialog:
 
