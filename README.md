@@ -72,15 +72,15 @@ When the DevOps Toolchain Pipeline appears, click on the `Deploy` button to star
 
 ![](doc/source/images/toolchain-pipeline.png)
 
-Once deployed, the app can be viewed by clicking `View app`. The app can also be viewed in the dashboard. The app should be prefixed with the string `watson-voice-bot-`, and the corresponding services that were created and easily identified by the `wvb-` prefix, i.e.: `wvb-assistant`.
+Once deployed, the app can be viewed by clicking `View app`. The app can also be viewed in the dashboard. The app should be prefixed with the string `watson-voice-bot-`, and the corresponding services that were created and easily be identified by the `wvb-` prefix, i.e.: `wvb-assistant`.
 
 ### 3. Upload the Watson Assistant workspace
 
-Now that our services are created and the app is deployed we need to update tell the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
+Now that our services are created and the app is deployed we need to update the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
 
-Each workspace in Watson Assistant has a specific ID, to find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
+Each workspace in Watson Assistant has a specific ID. To find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
 
-Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab, here's a snippet of the dialog:
+Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab. Here's a snippet of the dialog:
 
 ![](doc/source/images/dialog.png)
 
@@ -123,17 +123,17 @@ Create the following services:
 
 ### 3. Upload the Watson Assistant workspace
 
-Now that our services are created and the app is deployed we need to update tell the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
+Now that our services are created and the app is deployed we need to update the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
 
 Each workspace in Watson Assistant has a specific ID, to find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
 
-Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab, here's a snippet of the dialog:
+Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab. Here's a snippet of the dialog:
 
 ![](doc/source/images/dialog.png)
 
 ### 4. Configure `.env` with credentials
 
-Our services are created and workspace uploaded. It's now time to let our application run locally and to do we'll configure a simple text file with the values we want to use. We begin by copying the the [`env.sample`](env.sample) file and naming it `.env`.
+Our services are created and workspace uploaded. It's now time to let our application run locally and to do that we'll configure a simple text file with the values we want to use. We begin by copying the the [`env.sample`](env.sample) file and naming it `.env`.
 
 ```
 cp env.sample .env
@@ -142,7 +142,6 @@ cp env.sample .env
 We now populate the key-value pairs with credentials for each IBM Cloud service (Assistant, Speech To Text, and Text To Speech). These values can be found in the `Services` menu in IBM Cloud, by selecting the `Service Credentials` option for each service.
 
 Lastly, the `WORKSPACEID` value was retrieved in the previous step, we use that value here.
-earlier setup step (`WORKSPACE_ID`).
 
 #### `env.sample:`
 
