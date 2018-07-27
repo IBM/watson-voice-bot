@@ -1,6 +1,6 @@
 # Copyright 2018 IBM Corp. All Rights Reserved.
 
-# Licensed under the Apache License, Version 2.0 (the “License”);
+# Licensed under the Apache License, Version 2.0 (the “License”)
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -46,7 +46,7 @@ if 'VCAP_SERVICES' in os.environ:
         speechToTextUser = speechToTextCreds['username']
         speechToTextPassword = speechToTextCreds['password']
     if "WORKSPACEID" in os.environ:
-        workspace_id = os.getenv('WORKSPACEID')
+        workspace_id = os.getenv('WORKSPACE_ID')
 
 
 else:
@@ -62,7 +62,7 @@ else:
 
         speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
         speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
-        workspace_id = os.environ.get('WORKSPACEID')
+        workspace_id = os.environ.get('WORKSPACE_ID')
 
 
 @app.route('/')
@@ -91,11 +91,12 @@ def getConvResponse():
 
     if convContext is None:
         convContext = "{}"
-
+    print(convContext)
     jsonContext = json.loads(convContext)
     response = assistant.message(workspace_id=workspace_id,
                                  input={'text': convText},
                                  context=jsonContext)
+    print(response)
     reponseText = response["output"]["text"]
     responseDetails = {'responseText': reponseText[0],
                        'context': response["context"]}
