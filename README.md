@@ -220,7 +220,7 @@ User Reply: ok Thanks
 Voice Bot: Have a great day
 ```
 
-![](/doc/source/images/sample_output.png)
+![](doc/source/images/sample_output.png)
 
 # Links
 
