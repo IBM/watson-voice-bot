@@ -1,9 +1,4 @@
 let conversationContext = '';
-const audioContext = new AudioContext();
-let audioInput = null;
-let realAudioInput = null;
-let inputPoint = null;
-// let audioRecorder = null;
 let tokenSTT;
 let tokenTTS;
 let stream;
@@ -26,38 +21,6 @@ function initSTTService() {
     .catch(function(error) {
       console.log(error);
     });
-}
-
-function initTTSService() {
-  fetch('/api/text-to-speech/token')
-    .then(function(response) {
-      return response.text();
-    })
-    .then(function(_token) {
-      tokenTTS = _token;
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-}
-
-function gotStream(stream) {
-  inputPoint = audioContext.createGain();
-
-  realAudioInput = audioContext.createMediaStreamSource(stream);
-  audioInput = realAudioInput;
-  audioInput.connect(inputPoint);
-
-  const analyserNode = audioContext.createAnalyser();
-  analyserNode.fftSize = 2048;
-  inputPoint.connect(analyserNode);
-
-  // const audioRecorder = new Recorder(inputPoint);
-
-  const zeroGain = audioContext.createGain();
-  zeroGain.gain.value = 0.0;
-  inputPoint.connect(zeroGain);
-  zeroGain.connect(audioContext.destination);
 }
 
 function displayMsgDiv(str, who) {
@@ -107,6 +70,7 @@ $(document).ready(function() {
           conversationContext = res.results.context;
           displayMsgDiv(res.results.responseText, 'bot');
 
+          // eslint-disable-next-line no-undef
           stream = WatsonSpeech.TextToSpeech.synthesize({
             token: tokenTTS,
             text: res.results.responseText
@@ -135,6 +99,7 @@ $(document).ready(function() {
     })
       .done(function(res, status) {
         conversationContext = res.results.context;
+        // eslint-disable-next-line no-undef
         stream = WatsonSpeech.TextToSpeech.synthesize({
           token: tokenTTS,
           text: res.results.responseText
@@ -197,11 +162,6 @@ function stopRecording() {
   stopWSTTService();
 }
 
-// function stopCallback(blob) {
-//   websocket.send(blob);
-//   websocket.send(JSON.stringify({ action: 'stop' }));
-// }
-
 // changing the mic icon depedening upon its name. Also disabling the speech recognizer in this case
 $('#stt2').click(function() {
   const fullPath = document.getElementById('stt2').src;
@@ -220,28 +180,6 @@ $('#stt2').click(function() {
   }
 });
 
-function callTexttoSpeach(res) {
-  displayMsgDiv(res, 'bot');
-  $('#q').attr('disabled', 'disabled');
-
-  $.post('/api/conversation', {
-    convText: res,
-    context: JSON.stringify(conversationContext)
-  })
-    .done(function(res, status) {
-      conversationContext = res.results.context;
-
-      stream = WatsonSpeech.TextToSpeech.synthesize({
-        token: tokenTTS,
-        text: res.results.responseText
-      });
-      displayMsgDiv(traslatedText, 'bot');
-    })
-    .fail(function(jqXHR, e) {
-      console.log('Error: ' + jqXHR.responseText);
-    });
-}
-
 function callConversation(res) {
   $('#q').attr('disabled', 'disabled');
 
@@ -251,6 +189,7 @@ function callConversation(res) {
   })
     .done(function(res, status) {
       conversationContext = res.results.context;
+      // eslint-disable-next-line no-undef
       stream = WatsonSpeech.TextToSpeech.synthesize({
         token: tokenTTS,
         text: res.results.responseText
@@ -264,6 +203,7 @@ function callConversation(res) {
 }
 
 function startWSTTService() {
+  // eslint-disable-next-line no-undef
   stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
     token: tokenSTT,
     object_mode: false,
