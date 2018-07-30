@@ -48,13 +48,13 @@ function gotStream(stream) {
   audioInput = realAudioInput;
   audioInput.connect(inputPoint);
 
-  analyserNode = audioContext.createAnalyser();
+  const analyserNode = audioContext.createAnalyser();
   analyserNode.fftSize = 2048;
   inputPoint.connect(analyserNode);
 
   audioRecorder = new Recorder(inputPoint);
 
-  zeroGain = audioContext.createGain();
+  const zeroGain = audioContext.createGain();
   zeroGain.gain.value = 0.0;
   inputPoint.connect(zeroGain);
   zeroGain.connect(audioContext.destination);
@@ -168,7 +168,7 @@ if (window.SpeechRecognition != null) {
     }
 
     document.getElementById('2').src = './static/img/mic.gif';
-    const msg = $('#q').val();
+    $('#q').val();
     // $("#q").focus();
   };
 
@@ -205,7 +205,7 @@ function stopCallback(blob) {
 // changing the mic icon depedening upon its name. Also disabling the speech recognizer in this case
 $('#stt2').click(function() {
   const fullPath = document.getElementById('stt2').src;
-  const filename = fullPath.replace(/^.*[\\\/]/, '');
+  const filename = fullPath.replace(/^.*[\\/]/, '');
   if (filename == 'mic.gif') {
     try {
       document.getElementById('stt2').src = './static/img/mic_active.png';
