@@ -59,9 +59,12 @@ else:
 
         textToSpeechUser = os.environ.get('TEXTTOSPEECH_USER')
         textToSpeechPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
+        textToSpeechUrl = os.environ.get('TEXTTOSPEECH_URL')
 
         speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
         speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
+        speechToTextUrl = os.environ.get('SPEECHTOTEXT_URL')
+
         workspace_id = os.environ.get('WORKSPACE_ID')
 
 
