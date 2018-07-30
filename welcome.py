@@ -50,22 +50,19 @@ if 'VCAP_SERVICES' in os.environ:
 
 
 else:
-        print('Found local VCAP_SERVICES')
-        load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
-        assistantUsername = os.environ.get('ASSISTANT_USERNAME')
-        assistantPassword = os.environ.get('ASSISTANT_PASSWORD')
-        assistantIAMKey = os.environ.get('ASSISTANT_IAM_APIKEY')
-        assistantUrl = os.environ.get('ASSISTANT_URL')
+    print('Found local VCAP_SERVICES')
+    load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+    assistantUsername = os.environ.get('ASSISTANT_USERNAME')
+    assistantPassword = os.environ.get('ASSISTANT_PASSWORD')
+    assistantIAMKey = os.environ.get('ASSISTANT_IAM_APIKEY')
+    assistantUrl = os.environ.get('ASSISTANT_URL')
 
-        textToSpeechUser = os.environ.get('TEXTTOSPEECH_USER')
-        textToSpeechPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
-        textToSpeechUrl = os.environ.get('TEXTTOSPEECH_URL')
+    textToSpeechUser = os.environ.get('TEXTTOSPEECH_USER')
+    textToSpeechPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
 
-        speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
-        speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
-        speechToTextUrl = os.environ.get('SPEECHTOTEXT_URL')
-
-        workspace_id = os.environ.get('WORKSPACE_ID')
+    speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
+    speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
+    workspace_id = os.environ.get('WORKSPACE_ID')
 
 
 @app.route('/')
