@@ -1,6 +1,6 @@
 # Copyright 2018 IBM Corp. All Rights Reserved.
 
-# Licensed under the Apache License, Version 2.0 (the “License”);
+# Licensed under the Apache License, Version 2.0 (the “License”)
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -21,7 +21,7 @@ from flask import jsonify
 from flask import request
 from flask_socketio import SocketIO
 from watson_developer_cloud import AuthorizationV1
-from watson_developer_cloud import ConversationV1
+from watson_developer_cloud import AssistantV1
 from watson_developer_cloud import SpeechToTextV1
 from watson_developer_cloud import TextToSpeechV1
 
@@ -34,33 +34,35 @@ if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.getenv('VCAP_SERVICES'))
     print('Found VCAP_SERVICES')
     if 'conversation' in vcap:
-        conversationcreds = vcap['conversation'][0]['credentials']
-        conversationUser = conversationcreds['username']
-        conversationPassword = conversationcreds['password']
+        conversationCreds = vcap['conversation'][0]['credentials']
+        assistantUsername = conversationCreds['username']
+        assistantPassword = conversationCreds['password']
     if 'text_to_speech' in vcap:
-        texttospeachcreds = vcap['text_to_speech'][0]['credentials']
-        texttospeachUser = texttospeachcreds['username']
-        texttospeachPassword = texttospeachcreds['password']
+        textToSpeechCreds = vcap['text_to_speech'][0]['credentials']
+        textToSpeechUser = textToSpeechCreds['username']
+        textToSpeechPassword = textToSpeechCreds['password']
     if 'speech_to_text' in vcap:
-        speachtotextcreds = vcap['speech_to_text'][0]['credentials']
-        speachtotextUser = speachtotextcreds['username']
-        speachtotextPassword = speachtotextcreds['password']
+        speechToTextCreds = vcap['speech_to_text'][0]['credentials']
+        speechToTextUser = speechToTextCreds['username']
+        speechToTextPassword = speechToTextCreds['password']
     if "WORKSPACEID" in os.environ:
-        workspace_id = os.getenv('WORKSPACEID')
+        workspace_id = os.getenv('WORKSPACE_ID')
 
 
 else:
     print('Found local VCAP_SERVICES')
     load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
-    conversationUser = os.environ.get('CONVERSATION_USER')
-    conversationPassword = os.environ.get('CONVERSATION_PASSWORD')
+    assistantUsername = os.environ.get('ASSISTANT_USERNAME')
+    assistantPassword = os.environ.get('ASSISTANT_PASSWORD')
+    assistantIAMKey = os.environ.get('ASSISTANT_IAM_APIKEY')
+    assistantUrl = os.environ.get('ASSISTANT_URL')
 
-    texttospeachUser = os.environ.get('TEXTTOSPEECH_USER')
-    texttospeachPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
+    textToSpeechUser = os.environ.get('TEXTTOSPEECH_USER')
+    textToSpeechPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
 
-    speachtotextUser = os.environ.get('SPEECHTOTEXT_USER')
-    speachtotextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
-    workspace_id = os.environ.get('WORKSPACEID')
+    speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
+    speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
+    workspace_id = os.environ.get('WORKSPACE_ID')
 
 
 @app.route('/')
@@ -70,20 +72,31 @@ def Welcome():
 
 @app.route('/api/conversation', methods=['POST', 'GET'])
 def getConvResponse():
-    conversation = ConversationV1(
-        username=conversationUser,
-        password=conversationPassword,
-        version='2017-04-21')
+    # Instantiate Watson Assistant client.
+    # only give a url if we have one (don't override the default)
+    assistant_kwargs = {
+        'version': '2018-07-06',
+        'username': assistantUsername,
+        'password': assistantPassword,
+        'iam_api_key': assistantIAMKey
+    }
+
+    if assistantUrl:
+        assistant_kwargs['url'] = assistantUrl
+
+    assistant = AssistantV1(**assistant_kwargs)
+
     convText = request.form.get('convText')
     convContext = request.form.get('context')
 
     if convContext is None:
         convContext = "{}"
-
+    print(convContext)
     jsonContext = json.loads(convContext)
-    response = conversation.message(workspace_id=workspace_id,
-                                    input={'text': convText},
-                                    context=jsonContext)
+    response = assistant.message(workspace_id=workspace_id,
+                                 input={'text': convText},
+                                 context=jsonContext)
+    print(response)
     reponseText = response["output"]["text"]
     responseDetails = {'responseText': reponseText[0],
                        'context': response["context"]}
@@ -93,8 +106,8 @@ def getConvResponse():
 @app.route('/api/speech-to-text/token', methods=['POST', 'GET'])
 def getSttToken():
     try:
-        authorization = AuthorizationV1(username=speachtotextUser,
-                                        password=speachtotextPassword)
+        authorization = AuthorizationV1(username=speechToTextUser,
+                                        password=speechToTextPassword)
         retvalue = authorization.get_token(url=SpeechToTextV1.default_url)
     except Exception as e:
         print(e)
@@ -104,8 +117,8 @@ def getSttToken():
 @app.route('/api/text-to-speech/token', methods=['POST', 'GET'])
 def getTtsToken():
     try:
-        authorization = AuthorizationV1(username=texttospeachUser,
-                                        password=texttospeachPassword)
+        authorization = AuthorizationV1(username=textToSpeechUser,
+                                        password=textToSpeechPassword)
         retvalue = authorization.get_token(url=TextToSpeechV1.default_url)
     except Exception as e:
         print(e)
