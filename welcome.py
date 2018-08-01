@@ -46,7 +46,7 @@ if 'VCAP_SERVICES' in os.environ:
         speechToTextCreds = vcap['speech_to_text'][0]['credentials']
         speechToTextUser = speechToTextCreds['username']
         speechToTextPassword = speechToTextCreds['password']
-    if "WORKSPACEID" in os.environ:
+    if "WORKSPACE_ID" in os.environ:
         workspace_id = os.getenv('WORKSPACE_ID')
 
 
