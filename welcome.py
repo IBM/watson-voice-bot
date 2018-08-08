@@ -86,7 +86,6 @@ def getConvResponse():
             'iam_api_key': assistantIAMKey
         }
 
-
         assistant = AssistantV1(**assistant_kwargs)
 
         convText = request.form.get('convText')
@@ -98,8 +97,8 @@ def getConvResponse():
         jsonContext = json.loads(convContext)
 
         response = assistant.message(workspace_id=workspace_id,
-                                 input={'text': convText},
-                                 context=jsonContext)
+                                     input={'text': convText},
+                                     context=jsonContext)
     except Exception as e:
         print(e)
 
