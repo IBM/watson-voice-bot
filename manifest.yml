@@ -23,3 +23,6 @@ applications:
   - wvb-conversation-service
   - wvb-texttospeech-service
   - wvb-speechtotext-service
+env:
+  WORKSPACE_ID: placeholder
+  ASSISTANT_IAM_APIKEY: placeholder

@@ -38,6 +38,7 @@ if 'VCAP_SERVICES' in os.environ:
         conversationCreds = vcap['conversation'][0]['credentials']
         assistantUsername = conversationCreds['username']
         assistantPassword = conversationCreds['password']
+
     if 'text_to_speech' in vcap:
         textToSpeechCreds = vcap['text_to_speech'][0]['credentials']
         textToSpeechUser = textToSpeechCreds['username']
@@ -49,6 +50,8 @@ if 'VCAP_SERVICES' in os.environ:
     if "WORKSPACE_ID" in os.environ:
         workspace_id = os.getenv('WORKSPACE_ID')
 
+    if "ASSISTANT_IAM_APIKEY" in os.environ:
+        assistantIAMKey = os.getenv('ASSISTANT_IAM_APIKEY')
 
 else:
     print('Found local VCAP_SERVICES')
@@ -75,28 +78,31 @@ def Welcome():
 def getConvResponse():
     # Instantiate Watson Assistant client.
     # only give a url if we have one (don't override the default)
-    assistant_kwargs = {
-        'version': '2018-07-06',
-        'username': assistantUsername,
-        'password': assistantPassword,
-        'iam_api_key': assistantIAMKey
-    }
+    try:
+        assistant_kwargs = {
+            'version': '2018-07-06',
+            'username': assistantUsername,
+            'password': assistantPassword,
+            'iam_api_key': assistantIAMKey
+        }
 
-    if assistantUrl:
-        assistant_kwargs['url'] = assistantUrl
 
-    assistant = AssistantV1(**assistant_kwargs)
+        assistant = AssistantV1(**assistant_kwargs)
 
-    convText = request.form.get('convText')
-    convContext = request.form.get('context')
+        convText = request.form.get('convText')
+        convContext = request.form.get('context')
 
-    if convContext is None:
-        convContext = "{}"
-    print(convContext)
-    jsonContext = json.loads(convContext)
-    response = assistant.message(workspace_id=workspace_id,
+        if convContext is None:
+            convContext = "{}"
+        print(convContext)
+        jsonContext = json.loads(convContext)
+
+        response = assistant.message(workspace_id=workspace_id,
                                  input={'text': convText},
                                  context=jsonContext)
+    except Exception as e:
+        print(e)
+
     print(response)
     reponseText = response["output"]["text"]
     responseDetails = {'responseText': reponseText[0],
