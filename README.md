@@ -92,7 +92,7 @@ From the application overview, we can click on the `Runtime` menu located in the
 
 ![](doc/source/images/add_env_variable.png)
 
-We'll add the enviroment variable key name as `WORKSPACEID` and for the value we'll use the workspace ID from Step 3. Click `Save` and wait for the application to reload.
+We'll add the environment variable key name as `WORKSPACEID` and for the value we'll use the workspace ID from Step 3. Click `Save` and wait for the application to reload.
 
 Once the application restarts, click on the generated URL and start interacting with your voice enabled chatbot! See [Sample output](#sample-output) for things to say to your chatbot.
 
