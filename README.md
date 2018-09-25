@@ -102,6 +102,9 @@ Once the application restarts, click on the generated URL and start interacting 
 2. [Create Watson services with IBM Cloud](#2-create-watson-services-with-ibm-cloud)
 3. [Upload the Watson Assistant workspace](#3-upload-the-watson-assistant-workspace)
 4. [Configure `.env` with credentials](#4-configure-env-with-credentials)
+5. [OPTIONAL Create a virtual environment](#5-optional-create-a-virtual-environment)
+6. [Install the requirements](#6-install-the-requirements)
+7. [Run the application](#7-run-the-application)
 
 ### 1. Clone the repo
 
@@ -117,7 +120,7 @@ We’ll be using the file [`data/workspace.json`](data/workspace.json).
 
 Create the following services:
 
-* [**Watson Conversation**](https://console.ng.bluemix.net/catalog/services/conversation)
+* [**Watson Assistant**](https://console.ng.bluemix.net/catalog/services/conversation)
 * [**Watson Speech To Text**](https://console.bluemix.net/catalog/services/speech-to-text)
 * [**Watson Text To Speech**](https://console.bluemix.net/catalog/services/text-to-speech)
 
@@ -166,7 +169,25 @@ TEXTTOSPEECH_USER=<add tts username>
 TEXTTOSPEECH_PASSWORD=<add tts password>
 ```
 
-### 5. Run the application
+### 5. OPTIONAL Create a virtual environment
+
+$ `virtualenv watson-voice-bot`
+
+Activate the virtual environment:
+$ `. watson-voice-bot/bin/activate`
+
+Deactivate the virtual environment:
+$ `deactivate`
+
+### 6. Install the requirements
+
+Run:
+
+$ `pip install -r requirements.txt`
+
+to install the app's dependencies
+
+### 7. Run the application
 
 1. Start the app by running `python welcome.py`
 2. Launch a browser and navigate to [http://localhost:5000](http://localhost:5000)
