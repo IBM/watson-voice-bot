@@ -92,7 +92,7 @@ From the application overview, we can click on the `Runtime` menu located in the
 
 ![](doc/source/images/add_env_variable.png)
 
-We'll add the enviroment variable key name as `WORKSPACEID` and for the value we'll use the workspace ID from Step 3. Click `Save` and wait for the application to reload.
+We'll add the environment variable key name as `WORKSPACEID` and for the value we'll use the workspace ID from Step 3. Click `Save` and wait for the application to reload.
 
 Once the application restarts, click on the generated URL and start interacting with your voice enabled chatbot! See [Sample output](#sample-output) for things to say to your chatbot.
 
@@ -149,10 +149,13 @@ Lastly, the `WORKSPACEID` value was retrieved in the previous step, we use that 
 # Replace the credentials here with your own.
 # Rename this file to .env before starting the app.
 
-# Watson conversation
-CONVERSATION_USER=<add_conversation_username>
-CONVERSATION_PASSWORD=<add_conversation_password>
-WORKSPACEID=<add_conversation_workspace>
+# Watson Assistant
+WORKSPACE_ID=<add_assistant_workspace>
+ASSISTANT_URL=<add_assistant_url>
+## Un-comment and use either username+password or IAM apikey.
+# ASSISTANT_USERNAME=<add_assistant_username>
+# ASSISTANT_PASSWORD=<add_assistant_password>
+# ASSISTANT_IAM_APIKEY=<add_assistant_apikey>
 
 # Watson Speech To Text
 SPEECHTOTEXT_USER=<add_stt_username>
@@ -217,7 +220,7 @@ User Reply: ok Thanks
 Voice Bot: Have a great day
 ```
 
-![](/doc/source/images/sample_output.png)
+![](doc/source/images/sample_output.png)
 
 # Links
 
