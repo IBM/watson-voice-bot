@@ -4,26 +4,6 @@ let tokenTTS;
 let stream;
 let currentTime = 0;
 
-window.addEventListener('load', init);
-
-function init() {
-  initSTTService();
-}
-
-function initSTTService() {
-  console.log('here..');
-  fetch('/api/speech-to-text/token')
-    .then(function(response) {
-      return response.text();
-    })
-    .then(function(_token) {
-      tokenSTT = _token;
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-}
-
 function displayMsgDiv(str, who) {
   const time = new Date();
   let hours = time.getHours();
@@ -56,30 +36,18 @@ $(document).ready(function() {
   $('#p2').fadeTo(500, 1);
   $('#h').val('0');
 
-  fetch('/api/text-to-speech/token')
-    .then(function(response) {
-      return response.text();
+  $.ajax({
+    url: '/api/conversation',
+    convText: '',
+    context: ''
+  })
+    .done(function(res) {
+      conversationContext = res.results.context;
+      displayMsgDiv(res.results.responseText, 'bot');
+      play(res.results.responseText);
     })
-    .then(function(_token) {
-      tokenTTS = _token;
-      $.ajax({
-        url: '/api/conversation',
-        convText: '',
-        context: ''
-      })
-        .done(function(res) {
-          conversationContext = res.results.context;
-          displayMsgDiv(res.results.responseText, 'bot');
-
-          // eslint-disable-next-line no-undef
-          stream = WatsonSpeech.TextToSpeech.synthesize({
-            token: tokenTTS,
-            text: res.results.responseText
-          });
-        })
-        .fail(function(jqXHR, e) {
-          console.log('Error: ' + jqXHR.responseText);
-        });
+    .fail(function(jqXHR, e) {
+      console.log('Error: ' + jqXHR.responseText);
     })
     .catch(function(error) {
       console.log(error);
@@ -238,4 +206,74 @@ function startWSTTService() {
 function stopWSTTService() {
   stream.stop();
   currentTime = new Date().getTime() / 1000;
+}
+
+/*
+function getAudio(response) {  
+  const audio = document.createElement('audio');
+  audio.crossOrigin = 'anonymous';
+  audio.src = options.res;
+  audio.play();  
+}
+*/
+
+function play(inputText) {
+  const context = new (window.AudioContext || window.webkitAudioContext)();
+  let buf;
+
+  // $.post('/api/text-to-speech', {
+  //   text: inputText
+  // }).then(function(response) {
+  //   // const byteCharacters = atob(response);
+  //   // console.log('byte Chars: ' + byteCharacters);
+  //   const arrayBuffer = new ArrayBuffer(response.length);
+  //   const bufferView = new Uint8Array(arrayBuffer);
+  //   for (let i = 0; i < response.length; i++) {
+  //     arrayBuffer[i] = response[i];
+  //   }
+
+  //   // console.log('buffer view: ' + arrayBuffer);
+  //   context.decodeAudioData(
+  //     arrayBuffer,
+  //     function(buffer) {
+  //       buf = buffer;
+  //       play();
+  //     },
+  //     function(error) {
+  //       console.error('decodeAudioData error', error);
+  //     }
+  //   );
+  // });
+  const url = '/api/text-to-speech';
+  const params = 'text=' + inputText;
+  const request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+
+  // Decode asynchronously
+  request.onload = function() {
+    context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        buf = buffer;
+        play();
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+  };
+  request.send(params);
+
+  // Play the loaded file
+  function play() {
+    // Create a source node from the buffer
+    const source = context.createBufferSource();
+    console.log('buffer::: ' + buf);
+    source.buffer = buf;
+    // Connect to the final output node (the speakers)
+    source.connect(context.destination);
+    // Play immediately
+    source.start(0);
+  }
 }

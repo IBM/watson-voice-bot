@@ -17,18 +17,23 @@ import json
 import os
 
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, Response
 from flask import jsonify
 from flask import request
 from flask_socketio import SocketIO
+from flask_cors import CORS
 from watson_developer_cloud import AuthorizationV1
 from watson_developer_cloud import AssistantV1
 from watson_developer_cloud import SpeechToTextV1
 from watson_developer_cloud import TextToSpeechV1
 
+# from watson_developer_cloud.watson_service import WatsonService
+# import voicebot_authorization_v1
+# import fetch
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+CORS(app)
 
 
 if 'VCAP_SERVICES' in os.environ:
@@ -64,11 +69,13 @@ else:
     textToSpeechUser = os.environ.get('TEXTTOSPEECH_USER')
     textToSpeechPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
     textToSpeechUrl = os.environ.get('TEXTTOSPEECH_URL')
+    textToSpeechIAMKey = os.environ.get('TEXTTOSPEECH_IAM_APIKEY')
 
     speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
     speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
     workspace_id = os.environ.get('WORKSPACE_ID')
     speechToTextUrl = os.environ.get('SPEECHTOTEXT_URL')    
+    speechToTextIAMKey = os.environ.get('SPEECHTOTEXT_IAM_APIKEY')
 
 
 @app.route('/')
@@ -111,26 +118,67 @@ def getConvResponse():
     return jsonify(results=responseDetails)
 
 
-@app.route('/api/speech-to-text/token', methods=['POST', 'GET'])
-def getSttToken():
-    try:
-        authorization = AuthorizationV1(username=speechToTextUser,
-                                        password=speechToTextPassword)        
-        retvalue = authorization.get_token(url=speechToTextUrl)
-    except Exception as e:
-        print(e)
-    return retvalue
+@app.route('/api/text-to-speech', methods=['POST'])
+def getTextFromSpeech():    
+    tts_kwargs = {            
+            'username': textToSpeechUser,
+            'password': textToSpeechPassword,
+            'iam_apikey': textToSpeechIAMKey,
+            'url': textToSpeechUrl
+    }
+    
+    inputText = request.form.get('text')
+    ttsService = TextToSpeechV1(**tts_kwargs)   
+
+    def generate():        
+        audioOut = ttsService.synthesize(
+            inputText, 
+            'audio/wav',
+            'en-US_AllisonVoice').get_result()        
+
+        data = audioOut.content        
+        yield data
+
+    return Response(response = generate(), mimetype="audio/x-wav")
 
 
-@app.route('/api/text-to-speech/token', methods=['POST', 'GET'])
-def getTtsToken():
-    try:
-        authorization = AuthorizationV1(username=textToSpeechUser,
-                                        password=textToSpeechPassword)
-        retvalue = authorization.get_token(url=textToSpeechUrl)
-    except Exception as e:
-        print(e)
-    return retvalue
+@app.route('/api/speech-to-text', methods=['POST','GET'])
+def getSpeechFromText():
+    tts_kwargs = {            
+            'username': speechToTextUser,
+            'password': speechToTextPassword,
+            'iam_apikey': speechToTextIAMKey,
+            'url': speechToTextUrl
+    }
+
+    return Response(response = 'speech to text api', mimetype='application/json')
+
+
+
+# @app.route('/api/speech-to-text/token', methods=['POST', 'GET'])
+# def getSttToken():
+#     try:
+#         # authorization = AuthorizationV1(username='apikey',
+#         #                                        password=speechToTextIAMKey) 
+#         #authorization = voicebot_authorization_v1.VoiceBotAuthorizationV1(iam_apikey=speechToTextIAMKey)        
+#         #retvalue = authorization.get_token(url=speechToTextUrl)
+#         retvalue = fetch.get_authorization_token(speechToTextIAMKey)        
+#     except Exception as e:
+#         print(e)
+#     return retvalue
+
+
+# @app.route('/api/text-to-speech/token', methods=['POST', 'GET'])
+# def getTtsToken():
+#     try:
+#         #authorization = AuthorizationV1(username='apikey',
+#         #                                password=textToSpeechIAMKey)        
+#         #authorization = voicebot_authorization_v1.VoiceBotAuthorizationV1(iam_apikey=textToSpeechIAMKey)
+#         #retvalue = authorization.get_token(url=textToSpeechUrl)
+#         retvalue = fetch.get_authorization_token(textToSpeechIAMKey)        
+#     except Exception as e:
+#         print(e)
+#     return retvalue
 
 
 port = os.getenv('PORT', '5000')
