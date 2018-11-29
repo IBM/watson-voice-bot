@@ -133,6 +133,7 @@ function startUserMedia(stream) {
   // input.connect(audio_context.destination);
   // console.log('Input connected to audio context destination.');
 
+  // eslint-disable-next-line no-use-before-define
   recorder = new Recorder(input);
   console.log('Recorder initialised.');
 }
@@ -169,6 +170,7 @@ window.onload = function init() {
     // webkit shim
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+    // eslint-disable-next-line no-use-before-define
     window.URL = window.URL || window.webkitURL;
 
     context = new AudioContext();
