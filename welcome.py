@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import urllib
 import json
+from os.path import join, dirname
 import os
-
 from dotenv import load_dotenv
 from flask import Flask, Response
 from flask import jsonify
@@ -27,14 +28,29 @@ from watson_developer_cloud import AssistantV1
 from watson_developer_cloud import SpeechToTextV1
 from watson_developer_cloud import TextToSpeechV1
 
-# from watson_developer_cloud.watson_service import WatsonService
-# import voicebot_authorization_v1
-# import fetch
+from watson_developer_cloud.websocket import RecognizeCallback, AudioSource
+
+import tempfile
 
 app = Flask(__name__)
 socketio = SocketIO(app)
 CORS(app)
 
+
+class MyRecognizeCallback(RecognizeCallback):
+    def __init__(self):
+        RecognizeCallback.__init__(self)
+
+    def on_data(self, data):
+        print(json.dumps(data, indent=2))
+
+    def on_error(self, error):
+        print('Error received: {}'.format(error))
+
+    def on_inactivity_timeout(self, error):
+        print('Inactivity timeout: {}'.format(error))
+
+myRecognizeCallback = MyRecognizeCallback()
 
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.getenv('VCAP_SERVICES'))
@@ -119,7 +135,7 @@ def getConvResponse():
 
 
 @app.route('/api/text-to-speech', methods=['POST'])
-def getTextFromSpeech():    
+def getSpeechFromText():    
     tts_kwargs = {            
             'username': textToSpeechUser,
             'password': textToSpeechPassword,
@@ -136,49 +152,33 @@ def getTextFromSpeech():
             'audio/wav',
             'en-US_AllisonVoice').get_result()        
 
-        data = audioOut.content        
-        yield data
+        data = audioOut.content 
+
+        yield data    
 
     return Response(response = generate(), mimetype="audio/x-wav")
 
 
-@app.route('/api/speech-to-text', methods=['POST','GET'])
-def getSpeechFromText():
+@app.route('/api/speech-to-text', methods=['POST'])
+def getTextFromSpeech():
     tts_kwargs = {            
             'username': speechToTextUser,
             'password': speechToTextPassword,
             'iam_apikey': speechToTextIAMKey,
             'url': speechToTextUrl
-    }
+    }    
+    
+    sttService = SpeechToTextV1(**tts_kwargs) 
 
-    return Response(response = 'speech to text api', mimetype='application/json')
+    response=sttService.recognize(
+            audio=request.get_data(cache=False),
+            content_type='audio/wav',
+            timestamps=True,
+            word_confidence=True).get_result()          
 
+    text_output=response['results'][0]['alternatives'][0]['transcript']         
 
-
-# @app.route('/api/speech-to-text/token', methods=['POST', 'GET'])
-# def getSttToken():
-#     try:
-#         # authorization = AuthorizationV1(username='apikey',
-#         #                                        password=speechToTextIAMKey) 
-#         #authorization = voicebot_authorization_v1.VoiceBotAuthorizationV1(iam_apikey=speechToTextIAMKey)        
-#         #retvalue = authorization.get_token(url=speechToTextUrl)
-#         retvalue = fetch.get_authorization_token(speechToTextIAMKey)        
-#     except Exception as e:
-#         print(e)
-#     return retvalue
-
-
-# @app.route('/api/text-to-speech/token', methods=['POST', 'GET'])
-# def getTtsToken():
-#     try:
-#         #authorization = AuthorizationV1(username='apikey',
-#         #                                password=textToSpeechIAMKey)        
-#         #authorization = voicebot_authorization_v1.VoiceBotAuthorizationV1(iam_apikey=textToSpeechIAMKey)
-#         #retvalue = authorization.get_token(url=textToSpeechUrl)
-#         retvalue = fetch.get_authorization_token(textToSpeechIAMKey)        
-#     except Exception as e:
-#         print(e)
-#     return retvalue
+    return Response(response = text_output, mimetype='plain/text')
 
 
 port = os.getenv('PORT', '5000')
