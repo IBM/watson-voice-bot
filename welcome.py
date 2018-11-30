@@ -34,17 +34,24 @@ if 'VCAP_SERVICES' in os.environ:
     print('Found VCAP_SERVICES')
     if 'conversation' in vcap:
         conversationCreds = vcap['conversation'][0]['credentials']
-        assistantUsername = conversationCreds['username']
-        assistantPassword = conversationCreds['password']
+        assistantUsername = conversationCreds.get('username')
+        assistantPassword = conversationCreds.get('password')
+        assistantIAMKey = conversationCreds.get('apikey')
+        assistantUrl = conversationCreds.get('url')
 
     if 'text_to_speech' in vcap:
         textToSpeechCreds = vcap['text_to_speech'][0]['credentials']
-        textToSpeechUser = textToSpeechCreds['username']
-        textToSpeechPassword = textToSpeechCreds['password']
+        textToSpeechUser = textToSpeechCreds.get('username')
+        textToSpeechPassword = textToSpeechCreds.get('password')
+        textToSpeechUrl = textToSpeechCreds.get('url')
+        textToSpeechIAMKey = textToSpeechCreds.get('apikey')
     if 'speech_to_text' in vcap:
         speechToTextCreds = vcap['speech_to_text'][0]['credentials']
-        speechToTextUser = speechToTextCreds['username']
-        speechToTextPassword = speechToTextCreds['password']
+        speechToTextUser = speechToTextCreds.get('username')
+        speechToTextPassword = speechToTextCreds.get('password')
+        speechToTextUrl = speechToTextCreds.get('url')
+        speechToTextIAMKey = speechToTextCreds.get('apikey')
+
     if "WORKSPACE_ID" in os.environ:
         workspace_id = os.getenv('WORKSPACE_ID')
 
