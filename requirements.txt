@@ -1,6 +1,4 @@
-Flask==0.10.1
-flask-socketio==2.9.2
-watson_developer_cloud==2.1.0
-SpeechRecognition==3.8.1
-python-dotenv==0.8.2
+Flask==1.0.2
+watson_developer_cloud==2.5.0
+python-dotenv==0.9.1
 flask-cors==3.0.7
