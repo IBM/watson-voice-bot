@@ -15,21 +15,19 @@
 
 import json
 import os
-
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, Response
 from flask import jsonify
 from flask import request
 from flask_socketio import SocketIO
-from watson_developer_cloud import AuthorizationV1
+from flask_cors import CORS
 from watson_developer_cloud import AssistantV1
 from watson_developer_cloud import SpeechToTextV1
 from watson_developer_cloud import TextToSpeechV1
 
-
 app = Flask(__name__)
 socketio = SocketIO(app)
-
+CORS(app)
 
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.getenv('VCAP_SERVICES'))
@@ -63,10 +61,14 @@ else:
 
     textToSpeechUser = os.environ.get('TEXTTOSPEECH_USER')
     textToSpeechPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
+    textToSpeechUrl = os.environ.get('TEXTTOSPEECH_URL')
+    textToSpeechIAMKey = os.environ.get('TEXTTOSPEECH_IAM_APIKEY')
 
     speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
     speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
     workspace_id = os.environ.get('WORKSPACE_ID')
+    speechToTextUrl = os.environ.get('SPEECHTOTEXT_URL')
+    speechToTextIAMKey = os.environ.get('SPEECHTOTEXT_IAM_APIKEY')
 
 
 @app.route('/')
@@ -80,10 +82,11 @@ def getConvResponse():
     # only give a url if we have one (don't override the default)
     try:
         assistant_kwargs = {
-            'version': '2018-07-06',
+            'version': '2018-09-20',
             'username': assistantUsername,
             'password': assistantPassword,
-            'iam_api_key': assistantIAMKey
+            'iam_apikey': assistantIAMKey,
+            'url': assistantUrl
         }
 
         assistant = AssistantV1(**assistant_kwargs)
@@ -93,7 +96,6 @@ def getConvResponse():
 
         if convContext is None:
             convContext = "{}"
-        print(convContext)
         jsonContext = json.loads(convContext)
 
         response = assistant.message(workspace_id=workspace_id,
@@ -102,33 +104,58 @@ def getConvResponse():
     except Exception as e:
         print(e)
 
-    print(response)
+    response = response.get_result()
     reponseText = response["output"]["text"]
     responseDetails = {'responseText': reponseText[0],
                        'context': response["context"]}
     return jsonify(results=responseDetails)
 
 
-@app.route('/api/speech-to-text/token', methods=['POST', 'GET'])
-def getSttToken():
-    try:
-        authorization = AuthorizationV1(username=speechToTextUser,
-                                        password=speechToTextPassword)
-        retvalue = authorization.get_token(url=SpeechToTextV1.default_url)
-    except Exception as e:
-        print(e)
-    return retvalue
+@app.route('/api/text-to-speech', methods=['POST'])
+def getSpeechFromText():
+    tts_kwargs = {
+            'username': textToSpeechUser,
+            'password': textToSpeechPassword,
+            'iam_apikey': textToSpeechIAMKey,
+            'url': textToSpeechUrl
+    }
+
+    inputText = request.form.get('text')
+    ttsService = TextToSpeechV1(**tts_kwargs)
+
+    def generate():
+        audioOut = ttsService.synthesize(
+            inputText,
+            'audio/wav',
+            'en-US_AllisonVoice').get_result()
+
+        data = audioOut.content
+
+        yield data
+
+    return Response(response=generate(), mimetype="audio/x-wav")
 
 
-@app.route('/api/text-to-speech/token', methods=['POST', 'GET'])
-def getTtsToken():
-    try:
-        authorization = AuthorizationV1(username=textToSpeechUser,
-                                        password=textToSpeechPassword)
-        retvalue = authorization.get_token(url=TextToSpeechV1.default_url)
-    except Exception as e:
-        print(e)
-    return retvalue
+@app.route('/api/speech-to-text', methods=['POST'])
+def getTextFromSpeech():
+    tts_kwargs = {
+            'username': speechToTextUser,
+            'password': speechToTextPassword,
+            'iam_apikey': speechToTextIAMKey,
+            'url': speechToTextUrl
+    }
+
+    sttService = SpeechToTextV1(**tts_kwargs)
+
+    response = sttService.recognize(
+            audio=request.get_data(cache=False),
+            content_type='audio/wav',
+            timestamps=True,
+            word_confidence=True).get_result()
+
+    text_output = response['results'][0]['alternatives'][0]['transcript']
+
+    return Response(response=text_output, mimetype='plain/text')
 
 
 port = os.getenv('PORT', '5000')

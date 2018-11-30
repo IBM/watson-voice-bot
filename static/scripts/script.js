@@ -1,27 +1,6 @@
 let conversationContext = '';
-let tokenSTT;
-let tokenTTS;
-let stream;
-let currentTime = 0;
-
-window.addEventListener('load', init);
-
-function init() {
-  initSTTService();
-}
-
-function initSTTService() {
-  fetch('/api/speech-to-text/token')
-    .then(function(response) {
-      return response.text();
-    })
-    .then(function(_token) {
-      tokenSTT = _token;
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-}
+let recorder;
+let context;
 
 function displayMsgDiv(str, who) {
   const time = new Date();
@@ -55,129 +34,22 @@ $(document).ready(function() {
   $('#p2').fadeTo(500, 1);
   $('#h').val('0');
 
-  fetch('/api/text-to-speech/token')
-    .then(function(response) {
-      return response.text();
+  $.ajax({
+    url: '/api/conversation',
+    convText: '',
+    context: ''
+  })
+    .done(function(res) {
+      conversationContext = res.results.context;
+      displayMsgDiv(res.results.responseText, 'bot');
+      play(res.results.responseText);
     })
-    .then(function(_token) {
-      tokenTTS = _token;
-      $.ajax({
-        url: '/api/conversation',
-        convText: '',
-        context: ''
-      })
-        .done(function(res) {
-          conversationContext = res.results.context;
-          displayMsgDiv(res.results.responseText, 'bot');
-
-          // eslint-disable-next-line no-undef
-          stream = WatsonSpeech.TextToSpeech.synthesize({
-            token: tokenTTS,
-            text: res.results.responseText
-          });
-        })
-        .fail(function(jqXHR, e) {
-          console.log('Error: ' + jqXHR.responseText);
-        });
+    .fail(function(jqXHR, e) {
+      console.log('Error: ' + jqXHR.responseText);
     })
     .catch(function(error) {
       console.log(error);
     });
-
-  $('#q').keyup(function(e) {
-    $('#submit').removeAttr('disabled');
-    return false;
-  });
-
-  $('#submit').click(function() {
-    const text = $('#q').val();
-    displayMsgDiv(text, 'user');
-
-    $.post('/api/conversation', {
-      convText: text,
-      context: JSON.stringify(conversationContext)
-    })
-      .done(function(res, status) {
-        conversationContext = res.results.context;
-        // eslint-disable-next-line no-undef
-        stream = WatsonSpeech.TextToSpeech.synthesize({
-          token: tokenTTS,
-          text: res.results.responseText
-        });
-        displayMsgDiv(res.results.responseText, 'bot');
-      })
-      .fail(function(jqXHR, e) {
-        console.log('Error: ' + jqXHR.responseText);
-      });
-
-    return false;
-  });
-});
-
-// setting speech to text function
-window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-if (window.SpeechRecognition != null) {
-  const recognizer = new window.SpeechRecognition();
-  const transcription = document.getElementById('q');
-
-  // Start recognising
-  recognizer.onresult = function(event) {
-    transcription.textContent = '';
-    // $("#chat_input").val("I am listening ...");
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      if (event.results[i].isFinal) {
-        transcription.textContent = event.results[i][0].transcript; // + " (Confidence: " + event.results[i][0].confidence + ")"
-      } else {
-        transcription.textContent += event.results[i][0].transcript;
-      }
-    }
-
-    document.getElementById('2').src = './static/img/mic.gif';
-    $('#q').val();
-    // $("#q").focus();
-  };
-
-  // Listen for errors
-  recognizer.onerror = function(event) {
-    console.log('Recognition error: ' + event.message + '<br />');
-    document.getElementById('stt2').src = './static/img/mic.gif';
-    $('#q').val('');
-  };
-
-  recognizer.onend = function(event) {
-    document.getElementById('stt2').src = './static/img/mic.gif';
-    // $("#q").val("");
-  };
-} else {
-  // $("#stt2").hide();
-}
-
-function startRecording() {
-  // recorder = new Recorder(input);
-  // recorder.record();
-  startWSTTService();
-}
-
-function stopRecording() {
-  stopWSTTService();
-}
-
-// changing the mic icon depedening upon its name. Also disabling the speech recognizer in this case
-$('#stt2').click(function() {
-  const fullPath = document.getElementById('stt2').src;
-  const filename = fullPath.replace(/^.*[\\/]/, '');
-  if (filename == 'mic.gif') {
-    try {
-      document.getElementById('stt2').src = './static/img/mic_active.png';
-      startRecording();
-    } catch (ex) {
-      // console.log("Recognizer error .....");
-    }
-  } else {
-    stopRecording();
-    $('#q').val('');
-    document.getElementById('stt2').src = './static/img/mic.gif';
-  }
 });
 
 function callConversation(res) {
@@ -189,12 +61,7 @@ function callConversation(res) {
   })
     .done(function(res, status) {
       conversationContext = res.results.context;
-      // eslint-disable-next-line no-undef
-      stream = WatsonSpeech.TextToSpeech.synthesize({
-        token: tokenTTS,
-        text: res.results.responseText
-      });
-
+      play(res.results.responseText);
       displayMsgDiv(res.results.responseText, 'bot');
     })
     .fail(function(jqXHR, e) {
@@ -202,39 +69,124 @@ function callConversation(res) {
     });
 }
 
-function startWSTTService() {
-  // eslint-disable-next-line no-undef
-  stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
-    token: tokenSTT,
-    object_mode: false,
-    model: 'en-US_NarrowbandModel',
-    keepMicrophone: true,
-    max_alternatives: 0,
-    // keywords_threshold: 1,
-    interim_results: false
-  });
+function play(inputText) {
+  let buf;
 
-  stream.setEncoding('utf8'); // get text instead of Buffers for on data events
+  const url = '/api/text-to-speech';
+  const params = 'text=' + inputText;
+  const request = new XMLHttpRequest();
+  request.open('POST', url, true);
+  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  request.responseType = 'arraybuffer';
 
-  stream.on('data', function(data) {
-    console.log('Time Taken by STT:' + (new Date().getTime() / 1000 - currentTime));
-    displayMsgDiv(data, 'bot');
-    callConversation(data);
-  });
+  // Decode asynchronously
+  request.onload = function() {
+    context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        buf = buffer;
+        play();
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+  };
+  request.send(params);
 
-  stream.on('error', function(err) {
-    console.log(err);
-    $('#q').val('Error opening the STT Stream ...');
-  });
-
-  stream.on('listening', function() {
-    console.log('received event listening');
-    $('#q').val('I am listening ...');
-  });
-  $('#q').val('I am listening ...');
+  // Play the loaded file
+  function play() {
+    // Create a source node from the buffer
+    const source = context.createBufferSource();
+    source.buffer = buf;
+    // Connect to the final output node (the speakers)
+    source.connect(context.destination);
+    // Play immediately
+    source.start(0);
+  }
 }
 
-function stopWSTTService() {
-  stream.stop();
-  currentTime = new Date().getTime() / 1000;
+const recordMic = document.getElementById('stt2');
+recordMic.onclick = function() {
+  const fullPath = recordMic.src;
+  const filename = fullPath.replace(/^.*[\\/]/, '');
+  if (filename == 'mic.gif') {
+    try {
+      recordMic.src = './static/img/mic_active.png';
+      startRecording();
+      console.log('recorder started');
+      $('#q').val('I am listening ...');
+    } catch (ex) {
+      // console.log("Recognizer error .....");
+    }
+  } else {
+    stopRecording();
+    $('#q').val('');
+    recordMic.src = './static/img/mic.gif';
+  }
+};
+
+function startUserMedia(stream) {
+  const input = context.createMediaStreamSource(stream);
+  console.log('Media stream created.');
+  // Uncomment if you want the audio to feedback directly
+  // input.connect(audio_context.destination);
+  // console.log('Input connected to audio context destination.');
+
+  // eslint-disable-next-line
+  recorder = new Recorder(input);
+  console.log('Recorder initialised.');
 }
+
+function startRecording(button) {
+  recorder && recorder.record();
+  console.log('Recording...');
+}
+
+function stopRecording(button) {
+  recorder && recorder.stop();
+  console.log('Stopped recording.');
+
+  recorder &&
+    recorder.exportWAV(function(blob) {
+      console.log(blob);
+      const url = '/api/speech-to-text';
+      const request = new XMLHttpRequest();
+      request.open('POST', url, true);
+      // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      // Decode asynchronously
+      request.onload = function() {
+        callConversation(request.response);
+      };
+      request.send(blob);
+    });
+
+  recorder.clear();
+}
+
+window.onload = function init() {
+  try {
+    // webkit shim
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+    // eslint-disable-next-line
+    window.URL = window.URL || window.webkitURL;
+
+    context = new AudioContext();
+    console.log('Audio context set up.');
+    console.log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+  } catch (e) {
+    alert('No web audio support in this browser!');
+  }
+
+  navigator.getUserMedia(
+    {
+      audio: true
+    },
+    startUserMedia,
+    function(e) {
+      console.log('No live audio input: ' + e);
+    }
+  );
+};
