@@ -157,6 +157,7 @@ function stopRecording(button) {
 
       // Decode asynchronously
       request.onload = function() {
+        displayMsgDiv(request.response, 'bot');
         callConversation(request.response);
       };
       request.send(blob);
