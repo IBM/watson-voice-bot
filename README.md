@@ -133,7 +133,7 @@ Optionally, to view the conversation dialog select the workspace and choose the 
 
 ### 4. Configure `.env` with credentials
 
-Our services are created and workspace uploaded. It's now time to let our application run locally and to do that we'll configure a simple text file with the values we want to use. We begin by copying the the [`env.sample`](env.sample) file and naming it `.env`.
+Our services are created and workspace uploaded. It's now time to let our application run locally and to do that we'll configure a simple text file with the values we want to use. We begin by copying the [`env.sample`](env.sample) file and naming it `.env`.
 
 ```
 cp env.sample .env
