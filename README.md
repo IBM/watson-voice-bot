@@ -66,7 +66,7 @@ We’ll be using the file [`data/workspace.json`](data/workspace.json).
 
 The next step is to deploy the application, we'll do this by clicking the button below. A nice byproduct of doing this is that the services required (Speech-to-Text, Text-to-Speech, and Assistant) will be created automatically. Click the button below.
 
-[![Deploy to IBM Cloud](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM/watson-voice-bot.git)
+[![Deploy to IBM Cloud](https://cloud.ibm.com/deploy/button.png)](https://cloud.ibm.com/devops/setup/deploy?repository=https://github.com/IBM/watson-voice-bot.git)
 
 When the DevOps Toolchain Pipeline appears, click on the `Deploy` button to start the deployment. You can optionally, click on the `Delivery Pipeline` to watch the logs as the app is deployed.
 
@@ -86,7 +86,7 @@ Optionally, to view the conversation dialog select the workspace and choose the 
 
 ### 4. Configure environment variables
 
-The last step to perform is to configure our application to use the right Watson Assistant dialog. We'll solve this by specifying the workspace ID as an environment variable that the web application has access to read. To do this we'll navigate to our application overview from the [IBM Cloud Dashboard](https://console.bluemix.net/dashboard/apps/), searching for `watson-voice-bot` and clicking on the name.
+The last step to perform is to configure our application to use the right Watson Assistant dialog. We'll solve this by specifying the workspace ID as an environment variable that the web application has access to read. To do this we'll navigate to our application overview from the [IBM Cloud Dashboard](https://cloud.ibm.com/dashboard/apps/), searching for `watson-voice-bot` and clicking on the name.
 
 From the application overview, we can click on the `Runtime` menu located in the navigation bar on the left. Select the `Environment Variables` tab. Scroll down and click on `Add`.
 
@@ -117,9 +117,9 @@ We’ll be using the file [`data/workspace.json`](data/workspace.json).
 
 Create the following services:
 
-* [**Watson Conversation**](https://console.ng.bluemix.net/catalog/services/conversation)
-* [**Watson Speech To Text**](https://console.bluemix.net/catalog/services/speech-to-text)
-* [**Watson Text To Speech**](https://console.bluemix.net/catalog/services/text-to-speech)
+* [**Watson Conversation**](https://cloud.ibm.com/catalog/services/conversation)
+* [**Watson Speech To Text**](https://cloud.ibm.com/catalog/services/speech-to-text)
+* [**Watson Text To Speech**](https://cloud.ibm.com/catalog/services/text-to-speech)
 
 ### 3. Upload the Watson Assistant workspace
 
