@@ -37,7 +37,7 @@ When the reader has completed this code pattern they will understand how to:
 [![](https://img.youtube.com/vi/Jxi7U7VOMYg/0.jpg)](https://www.youtube.com/watch?v=Jxi7U7VOMYg)
 -->
 
-# Steps
+## Steps
 
 We'll have two methods to run this application: [using an easy one-click deploy option](#using-the-deploy-to-ibm-cloud-button), or [locally with a few CLI tools](#run-the-application-locally). Depending on your objective, learning or seeing the app quickly, choose accordingly.
 
@@ -56,7 +56,7 @@ Steps:
 
 Clone the `watson-voice-bot` repo locally. In a terminal, run:
 
-```
+```bash
 git clone https://github.com/IBM/watson-voice-bot
 ```
 
@@ -70,27 +70,40 @@ The next step is to deploy the application, we'll do this by clicking the button
 
 When the DevOps Toolchain Pipeline appears, click on the `Deploy` button to start the deployment. You can optionally, click on the `Delivery Pipeline` to watch the logs as the app is deployed.
 
-![](doc/source/images/toolchain-pipeline.png)
+![toolchain pipeline](doc/source/images/toolchain-pipeline.png)
 
 Once deployed, the app can be viewed by clicking `View app`. The app can also be viewed in the dashboard. The app should be prefixed with the string `watson-voice-bot-`, and the corresponding services that were created can easily be identified by the `wvb-` prefix, i.e.: `wvb-assistant`.
 
 ### 3. Upload the Watson Assistant workspace
 
-Now that our services are created and the app is deployed we need to update the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
+* Find the Assistant service in your IBM Cloud Dashboard.
+* Click on the service and then click on `Launch tool`.
+* Go to the `Skills` tab.
+* Click `Create new`
+* Click the `Import skill` tab.
+* Click `Choose JSON file`, go to your cloned repo dir, and `Open` the workspace.json file in [`data/workspace.json`](data/workspace.json).
+* Select `Everything` and click `Import`.
 
-Each workspace in Watson Assistant has a specific ID. To find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
+To find the `WORKSPACE_ID` for Watson Assistant:
+
+* Go back to the `Skills` tab.
+* Find the card for the workspace you would like to use. Look for `watson-online-store`.
+* Click on the three dots in the upper right-hand corner of the card and select `View API Details`.
+* Copy the `Workspace ID` GUID. Save it for the .env file
+
+!["Get Workspace ID"](https://github.com/IBM/pattern-utils/blob/master/watson-assistant/assistantPostSkillGetID.gif)
 
 Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab. Here's a snippet of the dialog:
 
-![](doc/source/images/dialog.png)
+![dialog](doc/source/images/dialog.png)
 
 ### 4. Configure environment variables
 
-The last step to perform is to configure our application to use the right Watson Assistant dialog. We'll solve this by specifying the workspace ID as an environment variable that the web application has access to read. To do this we'll navigate to our application overview from the [IBM Cloud Dashboard](https://cloud.ibm.com/dashboard/apps/), searching for `watson-voice-bot` and clicking on the name.
+The last step to perform is to configure our application to use the right Watson Assistant dialog. We'll solve this by specifying the `workspace ID` as an environment variable that the web application has access to read. To do this we'll navigate to our application overview from the [IBM Cloud Dashboard](https://cloud.ibm.com/dashboard/apps/), searching for `watson-voice-bot` and clicking on the name.
 
 From the application overview, we can click on the `Runtime` menu located in the navigation bar on the left. Select the `Environment Variables` tab. Scroll down and click on `Add`.
 
-![](doc/source/images/add_env_variable.png)
+![add env variable](doc/source/images/add_env_variable.png)
 
 We'll add the environment variable key name as `WORKSPACEID` and for the value we'll use the workspace ID from Step 3. Click `Save` and wait for the application to reload.
 
@@ -123,13 +136,26 @@ Create the following services:
 
 ### 3. Upload the Watson Assistant workspace
 
-Now that our services are created and the app is deployed we need to update the application to use a specific Watson Assistant dialog. We'll be using the file [`data/workspace.json`](data/workspace.json), which documents our entire conversation dialog. To do this, launch the Watson Assistant tool and use the `import` icon button on the right. Find the [`data/workspace.json`](data/workspace.json) file from the cloned repo and import that to the Watson Assistant tool.
+* Find the Assistant service in your IBM Cloud Dashboard.
+* Click on the service and then click on `Launch tool`.
+* Go to the `Skills` tab.
+* Click `Create new`
+* Click the `Import skill` tab.
+* Click `Choose JSON file`, go to your cloned repo dir, and `Open` the workspace.json file in [`data/workspace.json`](data/workspace.json).
+* Select `Everything` and click `Import`.
 
-Each workspace in Watson Assistant has a specific ID. To find the `Workspace ID` for a given workspace, click the context menu of the workspace and select `View details`. The workspace ID can be copied and saved as we'll need it in the next step.
+To find the `WORKSPACE_ID` for Watson Assistant:
+
+* Go back to the `Skills` tab.
+* Find the card for the workspace you would like to use. Look for `watson-online-store`.
+* Click on the three dots in the upper right-hand corner of the card and select `View API Details`.
+* Copy the `Workspace ID` GUID. Save it for the .env file
+
+!["Get Workspace ID"](https://github.com/IBM/pattern-utils/blob/master/watson-assistant/assistantPostSkillGetID.gif)
 
 Optionally, to view the conversation dialog select the workspace and choose the **Dialog** tab. Here's a snippet of the dialog:
 
-![](doc/source/images/dialog.png)
+![dialog](doc/source/images/dialog.png)
 
 ### 4. Configure `.env` with credentials
 
@@ -152,10 +178,11 @@ Lastly, the `WORKSPACEID` value was retrieved in the previous step, we use that 
 # Watson Assistant
 WORKSPACE_ID=<add_assistant_workspace>
 ASSISTANT_URL=<add_assistant_url>
-## Un-comment and use either username+password or IAM apikey.
+ASSISTANT_IAM_APIKEY=<add_assistant_apikey>
+
+## Un-comment to use username+password for an older instance, and comment out ASSISTANT_IAM_APIKEY
 # ASSISTANT_USERNAME=<add_assistant_username>
 # ASSISTANT_PASSWORD=<add_assistant_password>
-# ASSISTANT_IAM_APIKEY=<add_assistant_apikey>
 
 # Watson Speech To Text
 SPEECHTOTEXT_USER=<add_stt_username>
@@ -168,7 +195,32 @@ TEXTTOSPEECH_PASSWORD=<add tts password>
 
 ### 5. Run the application
 
-1. Start the app by running `python welcome.py`
+* The general recommendation for Python development is to use a virtual environment [(venv)](https://docs.python.org/3/tutorial/venv.html). To install and initialize a virtual environment, use the `venv` module on Python 3 (you install the virtualenv library for Python 2.7):
+
+
+Create the virtual environment using Python. Use one of the two commands depending on your Python version.
+> Note: it may be named python3 on your system.
+
+```bash
+python -m venv mytestenv       # Python 3.X
+virtualenv mytestenv           # Python 2.X
+```
+
+Now source the virtual environment. Use one of the two commands depending on your OS.
+
+```bash
+source mytestenv/bin/activate  # Mac or Linux
+./mytestenv/Scripts/activate   # Windows PowerShell
+```
+> **TIP** :bulb: To terminate the virtual environment use the `deactivate` command.
+
+1. Start the app by running:
+
+```bash
+pip install -r requirements.txt
+python welcome.py
+```
+
 2. Launch a browser and navigate to [http://localhost:5000](http://localhost:5000)
 3. Click on the microphone icon to begin speaking and click it again when you are finished.
 
@@ -220,21 +272,38 @@ User Reply: ok Thanks
 Voice Bot: Have a great day
 ```
 
-![](doc/source/images/sample_output.png)
+![sample output](doc/source/images/sample_output.png)
 
-# Links
+## Troubleshooting
+
+* If you are deploying to IBM Cloud and you get a `Deployment Error`:
+
+```
+Creating route watson-voice-bot.eu-gb.mybluemix.net...
+OK
+
+FAILED
+Server error, status code: 400, error code: 210003, message: The host is taken: watson-voice-bot
+```
+
+Fix this by changing the name and host to something unique
+
+https://github.com/IBM/watson-voice-bot/blob/23c5116031978bbc69c61d24f6f10394f1b9ec93/manifest.yml#L17
+https://github.com/IBM/watson-voice-bot/blob/23c5116031978bbc69c61d24f6f10394f1b9ec93/manifest.yml#L18
+
+## Links
 
 * [Watson Node.js SDK](https://github.com/watson-developer-cloud/node-sdk)
 * [Relevancy Training Demo Video](https://www.youtube.com/watch?v=8BiuQKPQZJk)
 * [Relevancy Training Demo Notebook](https://github.com/akmnua/relevancy_passage_bww)
 
-# Learn more
+## Learn more
 
 * **Artificial Intelligence Code Patterns**: Enjoyed this Code Pattern? Check out our other [AI Code Patterns](https://developer.ibm.com/technologies/artificial-intelligence/).
 * **AI and Data Code Pattern Playlist**: Bookmark our [playlist](https://www.youtube.com/playlist?list=PLzUbsvIyrNfknNewObx5N7uGZ5FKH0Fde) with all of our Code Pattern videos
 * **With Watson**: Want to take your Watson app to the next level? Looking to utilize Watson Brand assets? [Join the With Watson program](https://www.ibm.com/watson/with-watson/) to leverage exclusive brand, marketing, and tech resources to amplify and accelerate your Watson embedded commercial solution.
 
-# License
+## License
 This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
 [Apache Software License (ASL) FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
