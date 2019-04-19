@@ -18,7 +18,7 @@ applications:
   host: watson-voice-bot
   disk_quota: 512M
   buildpack: https://github.com/cloudfoundry/python-buildpack.git
-  random-route: false
+  random-route: true
   services:
   - wvb-conversation-service
   - wvb-texttospeech-service
