@@ -15,9 +15,9 @@ applications:
   memory: 128M
   instances: 1
   name: watson-voice-bot
-  random-route: true
   disk_quota: 512M
   buildpack: https://github.com/cloudfoundry/python-buildpack.git
+  random-route: true
   services:
   - wvb-conversation-service
   - wvb-texttospeech-service
