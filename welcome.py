@@ -160,13 +160,14 @@ def getTextFromSpeech():
             timestamps=True,
             word_confidence=True,
             smart_formatting=True).get_result()
-    
+
     # Ask user to repeat if STT can't transcribe the speech
     if len(response['results']) < 1:
-        return Response(response="Sorry, didn't understand you, please try again.", mimetype='plain/text')
+        return Response(mimetype='plain/text',
+                        response="Sorry, didn't get that. please try again!")
 
-    text_output = response['results'][0]['alternatives'][0]['transcript'].strip()
-
+    text_output = response['results'][0]['alternatives'][0]['transcript']
+    text_output = text_output.strip()
     return Response(response=text_output, mimetype='plain/text')
 
 
