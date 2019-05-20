@@ -95,6 +95,7 @@ def before_request():
         code = 301
         return redirect(url, code=code)
 
+
 @app.route('/')
 def Welcome():
     return app.send_static_file('index.html')
