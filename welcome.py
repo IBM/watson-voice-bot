@@ -18,7 +18,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, Response
 from flask import jsonify
-from flask import request
+from flask import request, redirect
 from flask_socketio import SocketIO
 from flask_cors import CORS
 from watson_developer_cloud import AssistantV1
@@ -77,6 +77,23 @@ else:
     speechToTextUrl = os.environ.get('SPEECHTOTEXT_URL')
     speechToTextIAMKey = os.environ.get('SPEECHTOTEXT_IAM_APIKEY')
 
+
+# Redirect http to https on CloudFoundry
+@app.before_request
+def before_request():
+    fwd = request.headers.get('x-forwarded-proto')
+
+    # Not on Cloud Foundry
+    if fwd is None:
+        return None
+    # On Cloud Foundry and is https
+    elif fwd == "https":
+        return None
+    # On Cloud Foundry and is http, then redirect
+    elif fwd == "http":
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
 
 @app.route('/')
 def Welcome():
