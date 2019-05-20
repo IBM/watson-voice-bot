@@ -166,7 +166,7 @@ def getTextFromSpeech():
         return Response(response="Sorry, didn't understand you, please try again.", mimetype='plain/text')
 
     text_output = response['results'][0]['alternatives'][0]['transcript'].strip()
-    
+
     return Response(response=text_output, mimetype='plain/text')
 
 
