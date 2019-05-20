@@ -19,9 +19,9 @@ applications:
   buildpack: https://github.com/cloudfoundry/python-buildpack.git
   random-route: true
   services:
-  - assistant-accessu
-  - tts-accessu
-  - stt-accessu
+  - wvb-conversation-service
+  - wvb-texttospeech-service
+  - wvb-speechtotext-service
 env:
-  WORKSPACE_ID: e72039fd-8be9-48e9-84c9-aa856994f6de
-  ASSISTANT_IAM_APIKEY: sFhUrTP6Xf67e0MpVH6q8ZLSUYB05s8GZYn8BFD_P4Xv
+  WORKSPACE_ID: placeholder
+  ASSISTANT_IAM_APIKEY: placeholder
