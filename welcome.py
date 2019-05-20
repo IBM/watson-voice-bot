@@ -161,12 +161,9 @@ def getTextFromSpeech():
             word_confidence=True,
             smart_formatting=True).get_result()
     if len(response['results']) < 1:
-        print(response)
         return Response(response="Sorry, didn't understand you, please try again.", mimetype='plain/text')
 
-    text_output = response['results'][0]['alternatives'][0]['transcript']
-    text_output = text_output.strip()
-    # print(f"'{text_output}'")
+    text_output = response['results'][0]['alternatives'][0]['transcript'].strip()
     return Response(response=text_output, mimetype='plain/text')
 
 
