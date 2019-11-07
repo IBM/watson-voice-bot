@@ -21,61 +21,15 @@ from flask import jsonify
 from flask import request, redirect
 from flask_socketio import SocketIO
 from flask_cors import CORS
-from watson_developer_cloud import AssistantV1
-from watson_developer_cloud import SpeechToTextV1
-from watson_developer_cloud import TextToSpeechV1
+from ibm_watson import AssistantV1
+from ibm_watson import SpeechToTextV1
+from ibm_watson import TextToSpeechV1
+
+import assistant_setup
 
 app = Flask(__name__)
 socketio = SocketIO(app)
 CORS(app)
-
-if 'VCAP_SERVICES' in os.environ:
-    vcap = json.loads(os.getenv('VCAP_SERVICES'))
-    print('Found VCAP_SERVICES')
-    if 'conversation' in vcap:
-        conversationCreds = vcap['conversation'][0]['credentials']
-        assistantUsername = conversationCreds.get('username')
-        assistantPassword = conversationCreds.get('password')
-        assistantIAMKey = conversationCreds.get('apikey')
-        assistantUrl = conversationCreds.get('url')
-
-    if 'text_to_speech' in vcap:
-        textToSpeechCreds = vcap['text_to_speech'][0]['credentials']
-        textToSpeechUser = textToSpeechCreds.get('username')
-        textToSpeechPassword = textToSpeechCreds.get('password')
-        textToSpeechUrl = textToSpeechCreds.get('url')
-        textToSpeechIAMKey = textToSpeechCreds.get('apikey')
-    if 'speech_to_text' in vcap:
-        speechToTextCreds = vcap['speech_to_text'][0]['credentials']
-        speechToTextUser = speechToTextCreds.get('username')
-        speechToTextPassword = speechToTextCreds.get('password')
-        speechToTextUrl = speechToTextCreds.get('url')
-        speechToTextIAMKey = speechToTextCreds.get('apikey')
-
-    if "WORKSPACE_ID" in os.environ:
-        workspace_id = os.getenv('WORKSPACE_ID')
-
-    if "ASSISTANT_IAM_APIKEY" in os.environ:
-        assistantIAMKey = os.getenv('ASSISTANT_IAM_APIKEY')
-
-else:
-    print('Found local VCAP_SERVICES')
-    load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
-    assistantUsername = os.environ.get('ASSISTANT_USERNAME')
-    assistantPassword = os.environ.get('ASSISTANT_PASSWORD')
-    assistantIAMKey = os.environ.get('ASSISTANT_IAM_APIKEY')
-    assistantUrl = os.environ.get('ASSISTANT_URL')
-
-    textToSpeechUser = os.environ.get('TEXTTOSPEECH_USER')
-    textToSpeechPassword = os.environ.get('TEXTTOSPEECH_PASSWORD')
-    textToSpeechUrl = os.environ.get('TEXTTOSPEECH_URL')
-    textToSpeechIAMKey = os.environ.get('TEXTTOSPEECH_IAM_APIKEY')
-
-    speechToTextUser = os.environ.get('SPEECHTOTEXT_USER')
-    speechToTextPassword = os.environ.get('SPEECHTOTEXT_PASSWORD')
-    workspace_id = os.environ.get('WORKSPACE_ID')
-    speechToTextUrl = os.environ.get('SPEECHTOTEXT_URL')
-    speechToTextIAMKey = os.environ.get('SPEECHTOTEXT_IAM_APIKEY')
 
 
 # Redirect http to https on CloudFoundry
@@ -103,58 +57,38 @@ def Welcome():
 
 @app.route('/api/conversation', methods=['POST', 'GET'])
 def getConvResponse():
-    # Instantiate Watson Assistant client.
-    # only give a url if we have one (don't override the default)
-    try:
-        assistant_kwargs = {
-            'version': '2018-09-20',
-            'username': assistantUsername,
-            'password': assistantPassword,
-            'iam_apikey': assistantIAMKey,
-            'url': assistantUrl
-        }
 
-        assistant = AssistantV1(**assistant_kwargs)
+    convText = request.form.get('convText')
+    convContext = request.form.get('context', "{}")
+    jsonContext = json.loads(convContext)
 
-        convText = request.form.get('convText')
-        convContext = request.form.get('context')
-
-        if convContext is None:
-            convContext = "{}"
-        jsonContext = json.loads(convContext)
-
-        response = assistant.message(workspace_id=workspace_id,
-                                     input={'text': convText},
-                                     context=jsonContext)
-    except Exception as e:
-        print(e)
+    response = assistant.message(workspace_id=workspace_id,
+                                 input={'text': convText},
+                                 context=jsonContext)
 
     response = response.get_result()
     reponseText = response["output"]["text"]
-    responseDetails = {'responseText': reponseText[0],
+    responseDetails = {'responseText': '... '.join(reponseText),
                        'context': response["context"]}
     return jsonify(results=responseDetails)
 
 
 @app.route('/api/text-to-speech', methods=['POST'])
 def getSpeechFromText():
-    tts_kwargs = {
-            'username': textToSpeechUser,
-            'password': textToSpeechPassword,
-            'iam_apikey': textToSpeechIAMKey,
-            'url': textToSpeechUrl
-    }
-
     inputText = request.form.get('text')
-    ttsService = TextToSpeechV1(**tts_kwargs)
+    ttsService = TextToSpeechV1()
 
     def generate():
-        audioOut = ttsService.synthesize(
-            inputText,
-            'audio/wav',
-            'en-US_AllisonVoice').get_result()
+        if inputText:
+            audioOut = ttsService.synthesize(
+                inputText,
+                accept='audio/wav',
+                voice='en-US_AllisonVoice').get_result()
 
-        data = audioOut.content
+            data = audioOut.content
+        else:
+            print("Empty response")
+            data = "I have no response to that."
 
         yield data
 
@@ -163,14 +97,8 @@ def getSpeechFromText():
 
 @app.route('/api/speech-to-text', methods=['POST'])
 def getTextFromSpeech():
-    tts_kwargs = {
-            'username': speechToTextUser,
-            'password': speechToTextPassword,
-            'iam_apikey': speechToTextIAMKey,
-            'url': speechToTextUrl
-    }
 
-    sttService = SpeechToTextV1(**tts_kwargs)
+    sttService = SpeechToTextV1()
 
     response = sttService.recognize(
             audio=request.get_data(cache=False),
@@ -191,4 +119,7 @@ def getTextFromSpeech():
 
 port = os.getenv('PORT', '5000')
 if __name__ == "__main__":
+    load_dotenv()
+    assistant = AssistantV1(version="2019-11-06")
+    workspace_id = assistant_setup.init_skill(assistant)
     socketio.run(app, host='0.0.0.0', port=int(port))
