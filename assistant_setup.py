@@ -13,15 +13,13 @@
 import json
 import logging
 import os
-import random
-import re
-import time
 
 logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 
 default_name = 'insurance-voice-bot'
 default_json = 'data/skill-insurance-voice-bot.json'
+description = "Assistant workspace created by watson-voice-bot."
 
 
 def init_skill(assistant_client):
@@ -34,8 +32,8 @@ def init_skill(assistant_client):
         using the WORKSPACE_NAME environment variable.
 
         If a workspace is not found by ID or name, then try to
-        create one from the JSON in file name specified by default_json. Use the
-        name as mentioned above so future lookup will find what
+        create one from the JSON in file name specified by default_json.
+        Use the name as mentioned above so future lookup will find what
         was created.
 
         :param assistant_client: Assistant service client
@@ -69,7 +67,7 @@ def init_skill(assistant_client):
                 if workspace['name'] == name:
                     ret = workspace['workspace_id']
                     LOG.info("Found WORKSPACE_ID=%(id)s using lookup by "
-                              "name=%(name)s" % {'id': ret, 'name': name})
+                             "name=%(name)s" % {'id': ret, 'name': name})
                     break
             else:
                 # Not found, so create it.
@@ -80,7 +78,7 @@ def init_skill(assistant_client):
 
                 created = assistant_client.create_workspace(
                     name=name,
-                    description="Assistant workspace created by watson-voice-bot.",
+                    description=description,
                     language=workspace['language'],
                     metadata=workspace['metadata'],
                     intents=workspace['intents'],
@@ -89,5 +87,5 @@ def init_skill(assistant_client):
                     counterexamples=workspace['counterexamples']).get_result()
                 ret = created['workspace_id']
                 LOG.info("Created WORKSPACE_ID=%(id)s with "
-                          "name=%(name)s" % {'id': ret, 'name': name})
+                         "name=%(name)s" % {'id': ret, 'name': name})
         return ret
