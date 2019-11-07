@@ -41,8 +41,8 @@ $(document).ready(function() {
   })
     .done(function(res) {
       conversationContext = res.results.context;
-      displayMsgDiv(res.results.responseText, 'bot');
       play(res.results.responseText);
+      displayMsgDiv(res.results.responseText, 'bot');
     })
     .fail(function(jqXHR, e) {
       console.log('Error: ' + jqXHR.responseText);
@@ -157,8 +157,8 @@ function stopRecording(button) {
 
       // Decode asynchronously
       request.onload = function() {
-        displayMsgDiv(request.response, 'bot');
         callConversation(request.response);
+        displayMsgDiv(request.response, 'user');
       };
       request.send(blob);
     });
