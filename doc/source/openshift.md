@@ -11,7 +11,8 @@ You will need a running OpenShift cluster, or OKD cluster. You can provision [Op
 1. [Create Watson services on IBM Cloud](#1-create-watson-services-on-ibm-cloud)
 1. [Create an OpenShift project](#2-create-an-openshift-project)
 1. [Create the config map](#3-create-the-config-map)
-1. [Run the web app](#4-run-the-web-app)
+1. [Get a secure endpoint](#4-get-a-secure-endpoint)
+1. [Run the web app](#5-run-the-web-app)
 
 ## 1. Create Watson services on IBM Cloud
 
@@ -62,12 +63,18 @@ Use the following links to create the Watson services on IBM Cloud. Copy/paste t
 
 * Go to the `Applications` tab, choose `Deployments` to view the status of your application.
 
-## 4. Run the web app
+## 4. Get a secure endpoint
 
 * From the OpenShift or OKD UI, under `Applications` ▷ `Routes` you will see your app.
+  * Click on the application `Name`.
+  * Under `TLS Settings`, click on `Edit`.
+  * Under `Security`, check the box for `Secure route`.
+  * Hit `Save`.
 
+## 5. Run the web app
+
+* Go back to `Applications` ▷ `Routes`. You will see your app.
 * Click your app's `Hostname`. This will open the Watson Voice Bot web app in your browser.
-
-* Go back to the README to see examples using the default insurance bot dialog.
+* Go back to the README to see an example using the default insurance bot dialog.
 
 [![return](https://raw.githubusercontent.com/IBM/pattern-utils/master/deploy-buttons/return.png)](https://github.com/IBM/watson-voice-bot#sample-output)
