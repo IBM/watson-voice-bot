@@ -107,7 +107,7 @@ source mytestenv/bin/activate  # Mac or Linux
 
 ```bash
 pip install -r requirements.txt
-python welcome.py
+python app.py
 ```
 
 2. Launch a browser and navigate to [http://localhost:5000](http://localhost:5000)
