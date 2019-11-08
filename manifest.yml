@@ -16,6 +16,7 @@ applications:
   instances: 1
   name: watson-voice-bot
   disk_quota: 512M
+  buildpack: python_buildpack
   random-route: false
   services:
   - wvb-watson-assistant
