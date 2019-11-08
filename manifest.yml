@@ -16,7 +16,6 @@ applications:
   instances: 1
   name: watson-voice-bot
   disk_quota: 512M
-  buildpack: https://github.com/cloudfoundry/python-buildpack.git
   random-route: false
   services:
   - wvb-watson-assistant

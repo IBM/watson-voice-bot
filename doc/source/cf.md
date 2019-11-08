@@ -16,9 +16,9 @@ This document shows how to deploy the server using Cloud Foundry on IBM Cloud.
 
 5. From the Toolchains view, click on the `Delivery Pipeline` to watch while the app is deployed. Here you'll be able to see logs about the deployment.
 
-   ![toolchain-pipeline](images/toolchain_pipeline.png)
+   ![toolchain_pipeline](images/toolchain_pipeline.png)
 
-6. To see the app and service created and configured for this code pattern, use the [IBM Cloud](https://cloud.ibm.com) dashboard. The app is named `watson-voice-bot` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
+6. To see the app and services created and configured for this code pattern, use the [IBM Cloud](https://cloud.ibm.com) dashboard. The app is named `watson-voice-bot` with a unique suffix. The following services are created and easily identified by the `wvb-` prefix:
 
    * wvb-watson-assistant
    * wvb-text-to-speech

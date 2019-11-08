@@ -117,7 +117,7 @@ def getTextFromSpeech():
     return Response(response=text_output, mimetype='plain/text')
 
 
-port = os.getenv('PORT', '5000')
+port = os.environ.get("PORT") or os.environ.get("VCAP_APP_PORT") or 5000
 if __name__ == "__main__":
     load_dotenv()
     assistant = AssistantV1(version="2019-11-06")
