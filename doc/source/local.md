@@ -34,7 +34,7 @@ Use the following links to create the Watson services on IBM Cloud:
 * Click the `Create skill` button.
 * Select the `Dialog skill` card and click `Next`.
 * Select the `Import skill` tab.
-* Click the `Choose JSON File` button and choose the `data/insurance.json` file in your cloned watson-voice-bot repo.
+* Click the `Choose JSON File` button and choose the `data/skill-insurance-voice-bot.json` file in your cloned watson-voice-bot repo.
 * Make sure the `Everything` button is enabled.
 * Click `Import`.
 * Go back to the Skills page (use the left sidebar).
