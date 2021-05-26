@@ -59,23 +59,23 @@ Next, set the key-value pairs with credentials for each IBM Cloud service (Assis
 * Click on a service to view its `Manage` page.
 * Use the copy icon and copy/paste the `API Key` and `URL` into your .env file for each service.
 
-### Example .env file:
+### sample.env file:
 
 ```bash
 # Copy this file to .env before starting the app.
 # Replace the credentials with your own.
 
 # Watson Speech to Text
-SPEECH_TO_TEXT_APIKEY=abc-T123-Z1abc2ATGrR1jHxYKuAbc2XkIzwlmTo-ABC
-SPEECH_TO_TEXT_URL=https://stream.watsonplatform.net/speech-to-text/api
+SPEECH_TO_TEXT_APIKEY=<add_speech-to-text_apikey>
+SPEECH_TO_TEXT_URL=<add_speech-to-text_url>
 
 # Watson Text to Speech
-TEXT_TO_SPEECH_APIKEY=AaBb_zzzMCdUY9e0dRQkn99_n2QIzzBWaABCJBOAp123
-TEXT_TO_SPEECH_URL=https://stream.watsonplatform.net/text-to-speech/api
+TEXT_TO_SPEECH_APIKEY=<add_text-to-speech_apikey>
+TEXT_TO_SPEECH_URL=<add_text-to-speech_url>
 
 # Watson Assistant
-ASSISTANT_APIKEY=ZzzzzQpm9NSj_v6ohelsLbbh99J_99uZ0aIauJAA9aa9
-ASSISTANT_URL=https://gateway.watsonplatform.net/assistant/api
+ASSISTANT_APIKEY=<add_assistant_apikey>
+ASSISTANT_URL=<add_assistant_url>
 
 # Optionally, use a non-default skill by specifying your own workspace ID or name.
 # WORKSPACE_ID=<add_assistant_workspace_id>
