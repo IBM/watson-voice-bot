@@ -8,7 +8,7 @@ This document shows how to run the `watson-voice-bot` server on your local machi
 2. [Create Watson services on IBM Cloud](#2-create-watson-services-on-ibm-cloud)
 3. [Upload the Watson Assistant workspace](#3-upload-the-watson-assistant-workspace)
 4. [Configure `.env` with credentials](#4-configure-env-with-credentials)
-1. [Run the application](#5-run-the-application)
+5. [Run the application](#5-run-the-application)
 
 ## 1. Clone the repo
 
@@ -59,7 +59,7 @@ Next, set the key-value pairs with credentials for each IBM Cloud service (Assis
 * Click on a service to view its `Manage` page.
 * Use the copy icon and copy/paste the `API Key` and `URL` into your .env file for each service.
 
-### sample.env file:
+### `sample.env`
 
 ```bash
 # Copy this file to .env before starting the app.
@@ -101,16 +101,17 @@ Now source the virtual environment. Use one of the two commands depending on you
 source mytestenv/bin/activate  # Mac or Linux
 ./mytestenv/Scripts/activate   # Windows PowerShell
 ```
+
 > **TIP** :bulb: To terminate the virtual environment use the `deactivate` command.
 
 1. Start the app by running:
 
-```bash
-pip install -r requirements.txt
-python app.py
-```
+  ```bash
+  pip install -r requirements.txt
+  python app.py
+  ```
 
-2. Launch a browser and navigate to [http://localhost:5000](http://localhost:5000)
-3. Click on the microphone icon to begin speaking and click it again when you are finished.
+1. Launch a browser and navigate to [http://localhost:5000](http://localhost:5000)
+1. Click on the microphone icon to begin speaking and click it again when you are finished.
 
 [![return](https://raw.githubusercontent.com/IBM/pattern-utils/master/deploy-buttons/return.png)](https://github.com/IBM/watson-voice-bot#sample-output)

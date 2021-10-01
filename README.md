@@ -11,7 +11,7 @@ When the reader has completed this code pattern they will understand how to:
 * Send and receive messages to Watson Assistant using REST APIs
 * Integrate Watson Speech To Text, Watson Text To Speech and Watson Assistant in a web app
 
-![](doc/source/images/architecture.png)
+![architecture](doc/source/images/architecture.png)
 
 ## Flow
 
@@ -44,7 +44,7 @@ Click on one of the options below for instructions on deploying the app.
 
 Follow the script below for a sample path in an insurance domain, or configure your own dialog under Watson Assistant.
 
-```
+```text
 Voice Bot: Hello. How can I help you?
 User Reply: I am trying to buy an insurance
 
@@ -103,6 +103,7 @@ Voice Bot: Have a great day
 * **With Watson**: Want to take your Watson app to the next level? Looking to utilize Watson Brand assets? [Join the With Watson program](https://www.ibm.com/watson/with-watson/) to leverage exclusive brand, marketing, and tech resources to amplify and accelerate your Watson embedded commercial solution.
 
 ## License
+
 This code pattern is licensed under the Apache Software License, Version 2.  Separate third party code objects invoked within this code pattern are licensed by their respective providers pursuant to their own separate licenses. Contributions are subject to the [Developer Certificate of Origin, Version 1.1 (DCO)](https://developercertificate.org/) and the [Apache Software License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
 [Apache Software License (ASL) FAQ](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
