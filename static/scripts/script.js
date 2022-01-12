@@ -29,7 +29,7 @@ function displayMsgDiv(str, who) {
   }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   $('#q').attr('disabled', 'disabled');
   $('#p2').fadeTo(500, 1);
   $('#h').val('0');
@@ -37,17 +37,17 @@ $(document).ready(function() {
   $.ajax({
     url: '/api/conversation',
     convText: '',
-    context: ''
+    context: '',
   })
-    .done(function(res) {
+    .done(function (res) {
       conversationContext = res.results.context;
       play(res.results.responseText);
       displayMsgDiv(res.results.responseText, 'bot');
     })
-    .fail(function(jqXHR, e) {
+    .fail(function (jqXHR, e) {
       console.log('Error: ' + jqXHR.responseText);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 });
@@ -57,14 +57,14 @@ function callConversation(res) {
 
   $.post('/api/conversation', {
     convText: res,
-    context: JSON.stringify(conversationContext)
+    context: JSON.stringify(conversationContext),
   })
-    .done(function(res, status) {
+    .done(function (res, status) {
       conversationContext = res.results.context;
       play(res.results.responseText);
       displayMsgDiv(res.results.responseText, 'bot');
     })
-    .fail(function(jqXHR, e) {
+    .fail(function (jqXHR, e) {
       console.log('Error: ' + jqXHR.responseText);
     });
 }
@@ -80,14 +80,14 @@ function play(inputText) {
   request.responseType = 'arraybuffer';
 
   // Decode asynchronously
-  request.onload = function() {
+  request.onload = function () {
     context.decodeAudioData(
       request.response,
-      function(buffer) {
+      function (buffer) {
         buf = buffer;
         play();
       },
-      function(error) {
+      function (error) {
         console.error('decodeAudioData error', error);
       }
     );
@@ -107,7 +107,7 @@ function play(inputText) {
 }
 
 const recordMic = document.getElementById('stt2');
-recordMic.onclick = function() {
+recordMic.onclick = function () {
   const fullPath = recordMic.src;
   const filename = fullPath.replace(/^.*[\\/]/, '');
   if (filename == 'mic.gif') {
@@ -148,7 +148,7 @@ function stopRecording(button) {
   console.log('Stopped recording.');
 
   recorder &&
-    recorder.exportWAV(function(blob) {
+    recorder.exportWAV(function (blob) {
       console.log(blob);
       const url = '/api/speech-to-text';
       const request = new XMLHttpRequest();
@@ -156,7 +156,7 @@ function stopRecording(button) {
       // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
       // Decode asynchronously
-      request.onload = function() {
+      request.onload = function () {
         callConversation(request.response);
         displayMsgDiv(request.response, 'user');
       };
@@ -183,10 +183,10 @@ window.onload = function init() {
 
   navigator.getUserMedia(
     {
-      audio: true
+      audio: true,
     },
     startUserMedia,
-    function(e) {
+    function (e) {
       console.log('No live audio input: ' + e);
     }
   );
