@@ -1,10 +1,21 @@
 language: python
 python:
   - "3.9"
-install:
-  - pip install -r requirements.txt
-  - pip install flake8
-  - npm install
-script:
-  - flake8 *.py
-  - ./node_modules/.bin/eslint static/scripts/script.js
+
+jobs:
+  include:
+    - language: python
+      python: 3.9
+      install:
+        - pip install -r requirements.txt
+        - pip install flake8
+        - npm install
+      script:
+        - flake8 *.py
+    - language: node_js
+      node_js:
+        - lts/*
+      install:
+        - npm install
+      script:
+        - ./node_modules/.bin/eslint static/scripts/script.js
